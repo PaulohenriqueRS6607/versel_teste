@@ -1,0 +1,27 @@
+.game-content-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 60px auto 0 auto;
+    gap: 30px;
+    box-sizing: border-box;
+}
+
+.game-spacing {
+    height: 80px;
+}
+
+/* ===================== RESPONSIVE UTILITIES ===================== */
+@media (max-width: 1200px) {
+    .game-content-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-content-wrapper {
+        margin: 40px auto 0 auto;
+        gap: 15px;
+    }
+}

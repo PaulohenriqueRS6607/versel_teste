@@ -1,0 +1,41 @@
+@import '../../assets/font/imports.css';
+
+/* ===================== GLOBAL STYLES ===================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f6f6f6;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* ===================== RESPONSIVE UTILITIES ===================== */
+
+@media (max-width: 768px) {
+    .imgIntroMobile {
+        display: block !important;
+    }
+    
+    .imgIntro {
+        display: none;
+    }
+    
+    .intro p {
+        width: 80% !important;
+    }
+    
+    .informations {
+        grid-template-columns: 1fr !important;
+        padding: 80px 20px 60px 20px !important;
+    }
+    
+    .productive {
+        width: 90% !important;
+        height: auto !important;
+        min-height: 300px;
+    }
+}
