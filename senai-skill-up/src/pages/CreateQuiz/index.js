@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import './style.css';
 import Header from '../../components/header';
-import { createTema, createPergunta } from '../../services/quizService';
-import { getCurrentUser } from '../../services/authService';
+import { createFormulario } from '../../services/formularioService';
+import { createPergunta } from '../../services/perguntaService';
+import { createAlternativa } from '../../services/alternativaService';
 
 import verifiedIcon from '../../assets/images/verified 1.png';
 import cancelIcon from '../../assets/images/cancel 1.png';
@@ -64,11 +64,9 @@ function MiniCard({ selected, onClick, index, pergunta }) {
 }
 
 export default function CreateQuiz() {
-  const navigate = useNavigate();
   const [titulo, setTitulo] = useState('');
   const [materia, setMateria] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [loading, setLoading] = useState(false);
   const [perguntas, setPerguntas] = useState([
     {
       pergunta: '',
@@ -81,6 +79,7 @@ export default function CreateQuiz() {
     },
   ]);
   const [perguntaAtual, setPerguntaAtual] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const handlePerguntaChange = (value) => {
     const novas = [...perguntas];
@@ -129,138 +128,106 @@ export default function CreateQuiz() {
     setPerguntaAtual(idx);
   };
 
-  const validateQuiz = () => {
-    // Validação básica
-    if (!titulo.trim()) {
-      alert('Por favor, adicione um título para o quiz.');
-      return false;
-    }
-    
-    if (!materia.trim()) {
-      alert('Por favor, adicione uma matéria para o quiz.');
-      return false;
-    }
-
-    if (!descricao.trim()) {
-      alert('Por favor, adicione uma descrição para o quiz.');
-      return false;
-    }
-
-    // Validar perguntas
-    for (let i = 0; i < perguntas.length; i++) {
-      const pergunta = perguntas[i];
-      
-      if (!pergunta.pergunta.trim()) {
-        alert(`Por favor, adicione texto para a pergunta ${i + 1}.`);
-        return false;
-      }
-
-      // Verificar se tem pelo menos uma resposta correta
-      const hasCorrectAnswer = pergunta.respostas.some(r => r.correta);
-      if (!hasCorrectAnswer) {
-        alert(`Por favor, marque pelo menos uma resposta correta para a pergunta ${i + 1}.`);
-        return false;
-      }
-
-      // Verificar se todas as respostas têm texto
-      for (let j = 0; j < pergunta.respostas.length; j++) {
-        if (!pergunta.respostas[j].texto.trim()) {
-          alert(`Por favor, adicione texto para todas as respostas da pergunta ${i + 1}.`);
-          return false;
-        }
-      }
-    }
-
-    return true;
-  };
-
   const handleFinalizarQuiz = async () => {
-    if (!validateQuiz()) {
+    // Validações básicas
+    if (!titulo.trim()) {
+      alert('Por favor, insira um título para o questionário');
       return;
     }
 
+    if (perguntas.length === 0 || !perguntas[0].pergunta.trim()) {
+      alert('Por favor, adicione pelo menos uma pergunta');
+      return;
+    }
+
+    // Verifica se todas as perguntas têm pelo menos uma resposta correta
+    const perguntasInvalidas = perguntas.filter(p => {
+      const temRespostaCorreta = p.respostas.some(r => r.correta);
+      return !p.pergunta.trim() || !temRespostaCorreta;
+    });
+
+    if (perguntasInvalidas.length > 0) {
+      alert('Todas as perguntas devem ter texto e pelo menos uma resposta marcada como correta');
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      setLoading(true);
-      
-      // Obter usuário atual
-      const currentUser = getCurrentUser();
-      if (!currentUser) {
-        alert('Você precisa estar logado para criar um quiz.');
-        navigate('/login');
-        return;
-      }
+      console.log('📝 Iniciando criação do questionário...');
 
-      // 1. Criar ou encontrar tema
-      let temaId;
-      try {
-        const temaData = {
-          nome: materia,
-          descricao: `Tema: ${materia}`,
-          cor: '#007bff'
-        };
-        const temaResponse = await createTema(temaData);
-        temaId = temaResponse.data.id;
-      } catch (error) {
-        console.log('Tema já existe ou erro ao criar, usando matéria como ID');
-        temaId = materia.toLowerCase().replace(/\s+/g, '_');
-      }
+      // 1. Criar o formulário
+      console.log('1️⃣ Criando formulário:', titulo);
+      const formulario = await createFormulario(titulo);
+      const idFormulario = formulario.idFormulario;
+      console.log('✅ Formulário criado com ID:', idFormulario);
 
-      // 2. Criar perguntas
-      const perguntasCriadas = [];
-      for (const pergunta of perguntas) {
-        const alternativas = pergunta.respostas.map((resposta, index) => ({
-          id: `alt${index + 1}`,
-          texto: resposta.texto,
-          correta: resposta.correta
-        }));
+      // 2. Para cada pergunta (sem tema por enquanto)
+      for (let i = 0; i < perguntas.length; i++) {
+        const perguntaData = perguntas[i];
 
-        const perguntaData = {
-          temaId: temaId,
-          titulo: pergunta.pergunta,
-          alternativas: alternativas
-        };
+        console.log(`2️⃣ Criando pergunta ${i + 1}:`, perguntaData.pergunta);
 
-        try {
-          const perguntaResponse = await createPergunta(perguntaData);
-          perguntasCriadas.push(perguntaResponse.data);
-        } catch (error) {
-          console.error('Erro ao criar pergunta:', error);
+        // Criar a pergunta (sem tema por enquanto - usar idTema: 1 como padrão)
+        const novaPergunta = await createPergunta({
+          textoPergunta: perguntaData.pergunta,
+          tema: { idTema: 1 }, // Tema padrão por enquanto
+          idFormulario: idFormulario
+        });
+
+        const idPergunta = novaPergunta.idPergunta;
+        console.log(`✅ Pergunta ${i + 1} criada com ID:`, idPergunta);
+
+        // 3. Para cada alternativa da pergunta
+        for (let j = 0; j < perguntaData.respostas.length; j++) {
+          const resposta = perguntaData.respostas[j];
+
+          if (resposta.texto.trim()) {
+            console.log(`3️⃣ Criando alternativa ${j + 1}:`, resposta.texto);
+
+            await createAlternativa({
+              idPergunta: idPergunta,
+              textoAlternativa: resposta.texto,
+              correta: resposta.correta
+            });
+
+            console.log(`✅ Alternativa ${j + 1} criada`);
+          }
         }
       }
 
-      console.log('Quiz criado com sucesso!', {
-        titulo,
-        materia,
-        descricao,
-        temaId,
-        perguntasCriadas: perguntasCriadas.length
-      });
+      console.log('🎉 Questionário criado com sucesso!');
+      alert(`Questionário "${titulo}" criado com sucesso!\n\n` +
+            `Total de perguntas: ${perguntas.length}`);
 
-      alert(`Questionário "${titulo}" criado com sucesso!\n${perguntasCriadas.length} perguntas adicionadas.`);
-      
-      // Resetar formulário
+      // Limpar formulário
       setTitulo('');
       setMateria('');
       setDescricao('');
-      setPerguntas([
-        {
-          pergunta: '',
-          respostas: [
-            { texto: '', correta: false, falsa: false },
-            { texto: '', correta: false, falsa: false },
-            { texto: '', correta: false, falsa: false },
-            { texto: '', correta: false, falsa: false },
-          ],
-        },
-      ]);
+      setPerguntas([{
+        pergunta: '',
+        respostas: [
+          { texto: '', correta: false, falsa: false },
+          { texto: '', correta: false, falsa: false },
+          { texto: '', correta: false, falsa: false },
+          { texto: '', correta: false, falsa: false },
+        ],
+      }]);
       setPerguntaAtual(0);
 
-      // Redirecionar para a página de quiz
-      navigate('/game');
-
     } catch (error) {
-      console.error('Erro ao criar quiz:', error);
-      alert('Erro ao criar questionário. Tente novamente.');
+      console.error('❌ Erro ao criar questionário:', error);
+
+      let mensagemErro = 'Erro ao criar questionário. ';
+      if (error.response?.data) {
+        mensagemErro += typeof error.response.data === 'string'
+          ? error.response.data
+          : JSON.stringify(error.response.data);
+      } else {
+        mensagemErro += error.message;
+      }
+
+      alert(mensagemErro);
     } finally {
       setLoading(false);
     }
@@ -278,6 +245,7 @@ export default function CreateQuiz() {
             value={titulo}
             onChange={e => setTitulo(e.target.value)}
           />
+          
           <input
             type="text"
             placeholder="Matéria "
@@ -285,6 +253,7 @@ export default function CreateQuiz() {
             value={materia}
             onChange={e => setMateria(e.target.value)}
           />
+
           <textarea
             placeholder="INSERIR DESCRICAO"
             className="quiz-description"
@@ -319,8 +288,9 @@ export default function CreateQuiz() {
                 className="finalize-quiz-btn" 
                 onClick={handleFinalizarQuiz}
                 disabled={loading}
+                style={{ opacity: loading ? 0.6 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
               >
-                {loading ? 'Criando Quiz...' : 'Finalizar Questionário'}
+                {loading ? '⏳ Criando questionário...' : '✅ Finalizar Questionário'}
               </button>
             </div>
           </div>

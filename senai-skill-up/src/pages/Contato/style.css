@@ -1,19 +1,16 @@
+@import './responsive.css';
+
 /* Layout principal */
 .contact-wrapper {
     display: flex;
     background: #f6f7f8;
     margin-left: 0;
     justify-content: flex-start;
-    padding: 30px 0 0 0;
-    margin-top: 60px;
-    min-height: calc(100vh - 60px);
+    padding: 0;
+    margin-top: 0;
+    min-height: 100vh;
+    align-items: flex-start;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    .contact-wrapper {
-        flex-direction: column;
-        padding: 20px 0 0 0;
-    }
-}
+/* Responsividade movida para arquivo separado: responsive.css */
 

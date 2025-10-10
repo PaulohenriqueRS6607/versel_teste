@@ -3,18 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import image from '../../assets/images/bagulho.svg';
 import "./style.css";
 import Header from '../../components/header';
-import loginService from '../../services/LoginService';
 import PasswordField from '../../components/PasswordField';
+import { useAuth } from '../../hooks/useAuth';
+import authService from '../../services/authService';
 
 export default function Login() {
     const [isSignUpMode, setIsSignUpMode] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth();
 
-    // Estados para o formulário de login
     const [loginEmail, setLoginEmail] = useState('');
     const [loginSenha, setLoginSenha] = useState('');
 
-    // Estados para o formulário de cadastro
     const [cadastroNome, setCadastroNome] = useState('');
     const [cadastroEmail, setCadastroEmail] = useState('');
     const [cadastroSenha, setCadastroSenha] = useState('');
@@ -30,30 +30,55 @@ export default function Login() {
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await loginService.login(loginEmail, loginSenha);
-            console.log("Login realizado com sucesso:", response);
-            navigate('/game');
+            await login(loginEmail, loginSenha);
+            console.log("Login realizado com sucesso");
+            navigate('/');
         } catch (error) {
             console.error("Erro no login:", error);
-            alert(error.message || "Erro no login. Verifique suas credenciais.");
+            alert("Erro no login. Verifique suas credenciais.");
         }
     };
     
     const handleSignUpSubmit = async (e) => {
         e.preventDefault();
-
         try {
-            const response = await loginService.cadastrar(cadastroNome, cadastroEmail, cadastroSenha);
-            console.log("Cadastro realizado com sucesso:", response);
+            const result = await authService.register({ nome: cadastroNome, email: cadastroEmail, senha: cadastroSenha });
+            console.log("Cadastro realizado com sucesso:", result.data);
             alert("Cadastro realizado com sucesso! Faça login para continuar.");
             setIsSignUpMode(false);
-            // Limpar campos do cadastro
             setCadastroNome('');
             setCadastroEmail('');
             setCadastroSenha('');
         } catch (error) {
             console.error("Erro no cadastro:", error);
-            alert(error.message || "Erro no cadastro. Tente novamente.");
+            
+            // Extrai a mensagem de erro do backend
+            let mensagemErro = "Erro no cadastro. ";
+            
+            if (error.response?.data) {
+                const erroBackend = error.response.data;
+                
+                // Se for um objeto com campos de validação
+                if (typeof erroBackend === 'object' && !Array.isArray(erroBackend)) {
+                    const erros = Object.entries(erroBackend)
+                        .map(([campo, mensagem]) => `${campo}: ${mensagem}`)
+                        .join('\n');
+                    mensagemErro += '\n' + erros;
+                } 
+                // Se for uma string simples
+                else if (typeof erroBackend === 'string') {
+                    mensagemErro += erroBackend;
+                } else {
+                    mensagemErro += "Verifique os dados e tente novamente.";
+                }
+            } else {
+                mensagemErro += "Verifique os dados e tente novamente.";
+            }
+            
+            // Adiciona dica sobre domínios permitidos
+            mensagemErro += "\n\n💡 Domínios de email permitidos:\n• gmail.com\n• outlook.com\n• hotmail.com\n• senai.com";
+            
+            alert(mensagemErro);
         }
     };
 
@@ -81,6 +106,13 @@ export default function Login() {
                             onChange={(e) => setLoginSenha(e.target.value)}
                             required
                         />
+                        <button 
+                            type="button" 
+                            className="forgot-password-btn"
+                            onClick={() => navigate('/ForgotPassword')}
+                        >
+                            Esqueceu senha?
+                        </button>
                         <input type="submit" value="Login" className="btn solid" />
                     </form>
 
@@ -90,10 +122,11 @@ export default function Login() {
                             <i className="fas fa-user"></i>
                             <input 
                                 type="text" 
-                                placeholder="Nome completo" 
+                                placeholder="Nome de usuário" 
                                 value={cadastroNome}
                                 onChange={(e) => setCadastroNome(e.target.value)}
                                 required
+                                minLength="3"
                             />
                         </div>
                         <div className="input-field">
@@ -107,10 +140,11 @@ export default function Login() {
                             />
                         </div>
                         <PasswordField 
-                            placeholder="Senha"
+                            placeholder="Senha (mínimo 6 caracteres)"
                             value={cadastroSenha}
                             onChange={(e) => setCadastroSenha(e.target.value)}
                             required
+                            minLength="6"
                         />
                         <input type="submit" className="btn" value="Cadastrar" />
                     </form>
@@ -120,8 +154,7 @@ export default function Login() {
             <div className="panels-container">
                 <div className="panel left-panel">
                     <div className="content">
-                        <h3>Já tem uma conta?</h3>
-                        <p></p>
+                        <h3>Não está cadastrado?</h3>
                         <button className="btn transparent" id="sign-up-btn" onClick={handleSignUpClick}>
                             CADASTRE-SE
                         </button>
@@ -130,8 +163,7 @@ export default function Login() {
                 </div>
                 <div className="panel right-panel">
                     <div className="content">
-                        <h3>Não está cadastrado?</h3>
-                        <p></p>
+                        <h3>Já tem uma conta?</h3>
                         <button className="btn transparent" id="sign-in-btn" onClick={handleSignInClick}>
                             LOGIN
                         </button>

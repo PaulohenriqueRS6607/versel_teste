@@ -1,4 +1,5 @@
 @import '../../assets/font/imports.css';
+@import './responsive.css';
 
 /* ===================== GLOBAL STYLES ===================== */
 
@@ -13,29 +14,4 @@ body {
     min-height: 100vh;
 }
 
-/* ===================== RESPONSIVE UTILITIES ===================== */
-
-@media (max-width: 768px) {
-    .imgIntroMobile {
-        display: block !important;
-    }
-    
-    .imgIntro {
-        display: none;
-    }
-    
-    .intro p {
-        width: 80% !important;
-    }
-    
-    .informations {
-        grid-template-columns: 1fr !important;
-        padding: 80px 20px 60px 20px !important;
-    }
-    
-    .productive {
-        width: 90% !important;
-        height: auto !important;
-        min-height: 300px;
-    }
-}
+/* Responsividade movida para arquivo separado: responsive.css */

@@ -1,84 +1,105 @@
-import localStorageService from './localStorageService';
+// Serviço de autenticação preparado para backend Java
+import api from './api';
 
-// Serviços de autenticação local
-export const login = async (email, password) => {
-  try {
-    const authResult = localStorageService.authenticateUser(email, password);
-    if (authResult) {
-      return { data: authResult };
-    } else {
-      throw new Error('Credenciais inválidas');
+// Classe para gerenciar autenticação
+class AuthService {
+  // Realizar login
+  async login(email, senha) {
+    try {
+      const response = await api.post('/auth/login', { email, senha });
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message || 'Erro no login'
+      };
     }
-  } catch (error) {
-    throw error;
   }
-};
 
-export const register = async (userData) => {
-  try {
-    // Verifica se o email já existe
-    const existingUser = localStorageService.getUserByEmail(userData.email);
-    if (existingUser) {
-      throw new Error('Email já cadastrado');
+  // Realizar cadastro
+  async register(userData) {
+    try {
+      const response = await api.post('/auth/register', userData);
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message || 'Erro no cadastro'
+      };
     }
-    
-    const newUser = localStorageService.createUser(userData);
-    return { data: newUser };
-  } catch (error) {
-    throw error;
   }
-};
 
-export const getProfile = async (id) => {
-  try {
-    const user = localStorageService.getUserById(id);
-    if (user) {
-      // Remove a senha dos dados retornados
-      const { senha, ...userWithoutPassword } = user;
-      return { data: userWithoutPassword };
-    } else {
-      throw new Error('Usuário não encontrado');
+  // Verificar autenticação
+  isAuthenticated() {
+    return !!sessionStorage.getItem('authToken');
+  }
+
+  // Obter usuário atual
+  getCurrentUser() {
+    const userData = sessionStorage.getItem('currentUser');
+    return userData ? JSON.parse(userData) : null;
+  }
+
+  // Obter dados do usuário
+  async getUserProfile(userId) {
+    try {
+      const response = await api.get(`/users/${userId}`);
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message || 'Erro ao buscar perfil'
+      };
     }
-  } catch (error) {
-    throw error;
   }
-};
 
-// Serviços adicionais de usuário
-export const updateBiografia = async (id, biografia) => {
-  try {
-    const updatedUser = localStorageService.updateUser(id, { biografia });
-    if (updatedUser) {
-      const { senha, ...userWithoutPassword } = updatedUser;
-      return { data: userWithoutPassword };
-    } else {
-      throw new Error('Usuário não encontrado');
+  // Atualizar perfil
+  async updateProfile(userId, userData) {
+    try {
+      const response = await api.put(`/users/${userId}`, userData);
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message || 'Erro ao atualizar perfil'
+      };
     }
-  } catch (error) {
-    throw error;
   }
-};
 
-export const getUsuarios = async () => {
-  try {
-    const users = localStorageService.getUsers();
-    // Remove as senhas dos dados retornados
-    const usersWithoutPassword = users.map(({ senha, ...user }) => user);
-    return { data: usersWithoutPassword };
-  } catch (error) {
-    throw error;
+  // Fazer logout
+  logout() {
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('currentUser');
   }
-};
 
-// Novos métodos para gerenciar autenticação
-export const getCurrentUser = () => {
-  return localStorageService.getCurrentUser();
-};
+  // Reset password
+  async resetPassword(email) {
+    try {
+      await api.post('/auth/reset-password', { email });
+      return {
+        success: true,
+        message: 'Email enviado com sucesso'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message || 'Erro ao enviar email'
+      };
+    }
+  }
+}
 
-export const logout = () => {
-  localStorageService.logout();
-};
-
-export const isAuthenticated = () => {
-  return localStorageService.isAuthenticated();
-}; 
+const authService = new AuthService();
+export default authService; // Substitui o conteúdo existente

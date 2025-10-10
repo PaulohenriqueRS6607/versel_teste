@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ProfileHeader, ProfileStatus, ProfileRanking, ProfileHistory } from '../';
-import { getGlobalRanking, getUserScore } from '../../../services/rankingService';
+import { getRankingGlobal, getPontuacaoUsuario } from '../../../services/rankingService';
 import "./style.css";
 
 export default function ProfileContent() {
@@ -26,7 +26,7 @@ export default function ProfileContent() {
 
         const fetchUserScore = async () => {
             try {
-                const { data } = await getUserScore(userId);
+                const { data } = await getPontuacaoUsuario(userId);
                 setUserScore(data.score);
             } catch (error) {
                 console.error("Erro ao buscar pontuação do usuário:", error);

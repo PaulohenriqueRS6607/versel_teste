@@ -1,4 +1,4 @@
-@import '../../styles/responsive.css';
+/* Responsividade removida */
 
 header {
   background-color: #00A2FF;
@@ -24,7 +24,7 @@ header {
   flex: 0 0 auto;
 }
 
-/* Media queries movidas para arquivo global: src/styles/responsive.css */
+/* Responsividade removida */
 
 .logo-section {
   flex: 0 0 auto;
@@ -231,4 +231,228 @@ header {
 
 .user-dropdown-item:active {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.user-dropdown-item.admin-item {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  border-left: 3px solid #fff;
+  font-weight: 700;
+}
+
+.user-dropdown-item.admin-item:hover {
+  background: linear-gradient(135deg, #ff5252, #d63031);
+}
+
+/* ========================================
+   MENU HAMBURGER
+   ======================================== */
+
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.hamburger-line {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 2px 0;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.hamburger-line.active:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-line.active:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-line.active:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* ========================================
+   MENU MOBILE
+   ======================================== */
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.mobile-menu {
+  background-color: #00A2FF;
+  width: 280px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+  animation: slideInLeft 0.3s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.mobile-menu-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-menu-close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-user-profile {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.mobile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.mobile-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.mobile-user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.mobile-username {
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mobile-points {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-medal {
+  width: 20px;
+  height: 20px;
+}
+
+.mobile-points-number {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mobile-menu-options {
+  flex: 1;
+  padding: 20px 0;
+}
+
+.mobile-menu-item {
+  color: white;
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mobile-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-item-logout {
+  color: #ff6b6b;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 10px;
+}
+
+.mobile-menu-item-logout:hover {
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+/* ========================================
+   RESPONSIVIDADE DO HEADER
+   ======================================== */
+
+/* Tablet e Mobile */
+@media (max-width: 768px) {
+  .hamburger-btn {
+    display: flex;
+  }
+  
+  .right-section {
+    display: none;
+  }
+  
+  .logo-section .logo-link {
+    font-size: 20px;
+  }
+}
+
+/* Mobile Pequeno */
+@media (max-width: 480px) {
+  .mobile-menu {
+    width: 100vw;
+  }
+  
+  .logo-section .logo-link {
+    font-size: 18px;
+  }
 }

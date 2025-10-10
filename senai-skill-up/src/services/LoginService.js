@@ -1,41 +1,35 @@
-import localStorageService from './localStorageService';
+// src/services/LoginService.js
+import api from './api';
+import { jwtDecode } from 'jwt-decode';
 
-const loginService = {
-  // ✅ Método para fazer login com email e senha
-  login: async (email, senha) => {
-    try {
-      const authResult = localStorageService.authenticateUser(email, senha);
-      if (authResult) {
-        return authResult;
-      } else {
-        throw new Error('Credenciais inválidas');
-      }
-    } catch (error) {
-      console.error('Erro no login:', error);
-      throw error;
-    }
-  },
-
-  // ✅ Método para cadastrar usuário com nome, email e senha
-  cadastrar: async (nome, email, senha) => {
-    try {
-      // Verifica se o email já existe
-      const existingUser = localStorageService.getUserByEmail(email);
-      if (existingUser) {
-        throw new Error('Email já cadastrado');
-      }
-
-      const usuarioDTO = { nome, email, senha };
-      const newUser = localStorageService.createUser(usuarioDTO);
-      
-      // Remove a senha do retorno
-      const { senha: _, ...userWithoutPassword } = newUser;
-      return userWithoutPassword;
-    } catch (error) {
-      console.error('Erro no cadastro:', error);
-      throw error;
-    }
-  },
+// LOGIN → envia email e senha para o backend, recebe token JWT
+export const login = async (email, senha) => {
+  const response = await api.post('/usuarios/login', { email, senha });
+  return response;
 };
 
-export default loginService;
+// CADASTRO → envia dados do usuário para o backend
+export const register = async (userData) => {
+  const response = await api.post('/usuarios/cadastro', userData);
+  return response;
+};
+
+// BUSCAR PERFIL → busca dados completos do usuário pelo ID
+export const getProfile = (userId) => {
+  return api.get(`/usuarios/${userId}`);
+};
+
+// ATUALIZAR BIOGRAFIA → atualiza biografia do usuário (requer autenticação)
+export const updateBiografia = (userId, biografia) => {
+  return api.post(`/usuarios/${userId}/biografia`, { biografia });
+};
+
+// Decodifica o token JWT para extrair informações (como email)
+export const decodeToken = (token) => {
+  try {
+    return jwtDecode(token);
+  } catch (error) {
+    console.error('Erro ao decodificar token:', error);
+    return null;
+  }
+};

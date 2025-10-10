@@ -4,7 +4,8 @@ import image6 from "../../../assets/images/image 6.svg";
 import image7 from "../../../assets/images/image 7.svg";
 import image8 from "../../../assets/images/image 8.svg";
 import image31 from "../../../assets/images/image 31.svg";
-import { getGlobalRanking } from "../../../services/rankingService";
+import rankingSlogan from "../../../assets/images/Group 13.svg";
+import { getRankingGlobal } from "../../../services/rankingService";
 import "./style.css";
 
 export default function RankingSection() {
@@ -17,7 +18,7 @@ export default function RankingSection() {
         const loadRanking = async () => {
             try {
                 setLoading(true);
-                const response = await getGlobalRanking();
+                const response = await getRankingGlobal();
                 setRanking(response.data || []);
             } catch (error) {
                 console.error('Erro ao carregar ranking:', error);
@@ -55,8 +56,15 @@ export default function RankingSection() {
         }
     };
 
+    const handleViewProfile = (user) => {
+        // Por enquanto, apenas mostra um alerta. 
+        // Em uma aplicação real, isso abriria um modal ou navegaria para a página de perfil
+        alert(`Usuário: ${user.nome}\nPontos: ${user.pontos}\nPosição: ${user.posicao || 'N/A'}`);
+    };
+
     return (
         <div className="ranking-container">
+            <img src={rankingSlogan} alt="Ranking" className="ranking-slogan" />
             <div className="ranking-pesquisa-container">
                 <input 
                     placeholder="Pesquisar..." 
@@ -74,9 +82,7 @@ export default function RankingSection() {
                         <div
                             key={user.id || idx}
                             className="ranking-item"
-                            onClick={() => {
-                                alert(`Visualizar perfil de ${user.nome} - ${user.pontos} pontos`);
-                            }}
+                            onClick={() => handleViewProfile(user)}
                         >
                             {idx < 3 && user.avatar ? (
                                 <img src={getRankIcon(user.avatar)} alt={`Rank ${idx + 1}`} className="ranking-pos-icon" /> 

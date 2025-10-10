@@ -1,11 +1,22 @@
 .questionarios-container {
     background: #d6e6fa;
     border-radius: 12px;
-    padding: 24px;
+    padding: 42px 24px 24px 24px; /* espaço extra no topo para a faixa */
     width: 600px;
     position: relative;
     min-height: 520px;
     box-sizing: border-box;
+}
+
+/* Faixa colada ao container (slogan) */
+.quiz-slogan {
+    position: absolute;
+    top: -38px; /* valor negativo para colar na borda */
+    left: 22px;
+    z-index: 2;
+    pointer-events: none;
+    width: 350px; /* diminui a imagem */
+    height: auto;
 }
 
 .questionarios-pesquisa-container {

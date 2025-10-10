@@ -1,7 +1,6 @@
 // Header Components
 export { default as Header } from './header';
 export { default as Footer } from './Footer';
-export { default as MeioFooter } from './MeioFooter';
 
 // Form Components
 export { default as SignUpForm } from './SignUpForm';
@@ -26,11 +25,23 @@ export { default as ContactForm } from './ContactComponents/ContactForm';
 export { default as SupportForm } from './ContactComponents/SupportForm';
 export { default as TermsContent } from './ContactComponents/TermsContent';
 
+// Error Components
+export { default as ConnectionError } from './ConnectionError';
+
 // Game Components
 export { default as GameOptions } from './GameComponents/GameOptions';
 export { default as GameContent } from './GameComponents/GameContent';
 export { default as RankingSection } from './GameComponents/RankingSection';
 export { default as QuizSection } from './GameComponents/QuizSection';
+export { default as GameQuiz } from './GameQuiz';
+
+// Users Components
+export { default as RankingTabs } from './UsersComponents/RankingTabs';
+export { default as UserCard } from './UsersComponents/UserCard';
+export { default as UserProfile } from './UsersComponents/UserProfile';
+export { default as UserManagementTable } from './UsersComponents/UserManagementTable';
+export { default as UserEditModal } from './UsersComponents/UserEditModal';
+export { default as PermissionTypeModal } from './UsersComponents/PermissionTypeModal';
 
 
 // Profile Components
@@ -40,5 +51,5 @@ export { default as ProfileRanking } from './ProfileComponents/ProfileRanking';
 export { default as ProfileHistory } from './ProfileComponents/ProfileHistory';
 export { default as DeleteAccountModal } from './ProfileComponents/DeleteAccountModal';
 
-// Utility Components
+// Security Components
 export { default as ProtectedRoute } from './ProtectedRoute';

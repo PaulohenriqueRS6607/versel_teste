@@ -5,7 +5,7 @@
     padding: 30px 40px 30px 40px;
     border-radius: 0;
     margin-left: 40px;
-    margin-top: 0;
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     border: none;
@@ -81,12 +81,4 @@
     color: #1f88bd;
 }
 
-@media (max-width: 1100px) {
-    .terms-main {
-        width: 100%;
-        min-width: 0;
-        padding: 20px;
-        height: auto;
-        min-height: 500px;
-    }
-}
+/* Responsividade removida */

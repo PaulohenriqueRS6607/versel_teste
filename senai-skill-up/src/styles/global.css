@@ -2,8 +2,7 @@
    ESTILOS GLOBAIS DO PROJETO
    ======================================== */
 
-/* Importação das media queries responsivas */
-@import './responsive.css';
+/* Responsividade removida */
 
 /* Reset básico */
 * {
@@ -83,7 +82,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* Container base */
-.container {
+.container-global {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -175,28 +174,5 @@ input:focus, textarea:focus, select:focus {
 .transition-fast { transition: all 0.15s ease !important; }
 .transition-slow { transition: all 0.5s ease !important; }
 
-/* Responsividade para utilitários */
-@media (max-width: 575.98px) {
-  .d-sm-none { display: none !important; }
-  .d-sm-block { display: block !important; }
-  .d-sm-flex { display: flex !important; }
-}
-
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .d-md-none { display: none !important; }
-  .d-md-block { display: block !important; }
-  .d-md-flex { display: flex !important; }
-}
-
-@media (min-width: 768px) and (max-width: 991.98px) {
-  .d-lg-none { display: none !important; }
-  .d-lg-block { display: block !important; }
-  .d-lg-flex { display: flex !important; }
-}
-
-@media (min-width: 992px) {
-  .d-xl-none { display: none !important; }
-  .d-xl-block { display: block !important; }
-  .d-xl-flex { display: flex !important; }
-}
+/* Responsividade removida */
 

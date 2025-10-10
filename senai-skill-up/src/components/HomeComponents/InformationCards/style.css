@@ -27,6 +27,8 @@
 .informations img {
     width: 13%;
     padding-bottom: 15px;
+    display: block;
+    margin: 0 auto;
 }
 
 .informations h3 {

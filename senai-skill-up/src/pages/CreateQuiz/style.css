@@ -1,8 +1,10 @@
+@import './responsive.css';
+
+/* Removido overflow hidden global para permitir rolagem */
 body, html {
   background: #fff !important;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 .quiz-container {
@@ -330,23 +332,4 @@ body, html {
   z-index: 2;
 }
 
-@media (max-width: 900px) {
-  .sidebar-left, .sidebar-right {
-    display: none;
-    position: static;
-    width: 100%;
-    height: auto;
-    box-shadow: none;
-  }
-  .quiz-container {
-    padding: 0;
-  }
-  .main-content {
-    min-width: 100vw;
-    padding: 0;
-  }
-  .question-card {
-    min-width: 90vw;
-    max-width: 98vw;
-  }
-}
+/* Responsividade removida */

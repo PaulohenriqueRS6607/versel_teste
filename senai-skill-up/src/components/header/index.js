@@ -1,43 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
 import { Link, useNavigate } from 'react-router-dom';
-import { getCurrentUser, logout, isAuthenticated } from '../../services/authService';
-import localStorageService from '../../services/localStorageService';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function Header() {
     const navigate = useNavigate();
+    const { userData, isLoggedIn, logout } = useAuth();
     
-    // Estados para dados do usuário (mantém lógica, mas usa dados mockados na interface)
-    const [userData, setUserData] = useState(null);
-    const [userPoints, setUserPoints] = useState(0);
-
-    // Dados do usuário - atualiza nome e pontos com dados reais
-    const getUserData = () => {
-        if (userData && userData.nome) {
-            return {
-                name: userData.nome,
-                avatar: require("../../assets/images/user-profile 1.png"),
-                isLoggedIn: true
-            };
-        }
-        return {
-            name: "USUARIO",
-            avatar: require("../../assets/images/user-profile 1.png"),
-            isLoggedIn: true
-        };
-    };
-
-    const getPointsData = () => {
-        return {
-            points: userPoints || 10000,
-            medalIcon: require("../../assets/images/image 33.png"),
-            level: "Bronze"
-        };
-    };
-
-    const currentUserData = getUserData();
-    const currentPointsData = getPointsData();
-
+    
     // Estado para controlar o dropdown de configurações
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const settingsDropdownRef = useRef(null);
@@ -45,67 +15,50 @@ export default function Header() {
     // Estado para controlar o dropdown do perfil do usuário
     const [isUserProfileOpen, setIsUserProfileOpen] = useState(false);
     const userProfileDropdownRef = useRef(null);
+    
+    // Estado para controlar o menu hamburger
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    // Carrega dados do usuário logado (só para lógica interna)
-    useEffect(() => {
-        const loadUserData = () => {
-            const authenticated = isAuthenticated();
-            
-            if (authenticated) {
-                const currentUser = getCurrentUser();
-                if (currentUser) {
-                    setUserData(currentUser);
-                    
-                    // Busca dados completos do usuário para obter pontos atualizados
-                    const fullUserData = localStorageService.getUserById(currentUser.userId);
-                    if (fullUserData) {
-                        setUserPoints(fullUserData.pontos);
-                    }
-                }
-            }
-        };
-
-        loadUserData();
-        
-        // Listener para atualizar dados quando mudam no localStorage
-        const handleStorageChange = () => {
-            loadUserData();
-        };
-        
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
+    // Função para controlar o menu hamburger
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+        setIsSettingsOpen(false);
+        setIsUserProfileOpen(false);
+    };
 
     // Funções para controlar o dropdown de configurações
     const toggleSettings = () => {
         setIsSettingsOpen(!isSettingsOpen);
         setIsUserProfileOpen(false); // Fecha o dropdown do usuário
+        setIsMobileMenuOpen(false); // Fecha o menu mobile
     };
 
     // Funções para controlar o dropdown do perfil do usuário
     const toggleUserProfile = () => {
         setIsUserProfileOpen(!isUserProfileOpen);
         setIsSettingsOpen(false); // Fecha o dropdown de configurações
+        setIsMobileMenuOpen(false); // Fecha o menu mobile
     };
 
     const handleSettingsClick = (option) => {
         console.log(`Opção selecionada: ${option}`);
         setIsSettingsOpen(false);
+        setIsMobileMenuOpen(false);
         
         // Aqui você pode adicionar a lógica para cada opção
         switch(option) {
+                // Redirecionar para página de termos
             case 'TERMOS':
                 navigate('/termos');
                 break;
+                // Redirecionar para página de contato
             case 'CONTATO':
                 navigate('/contato');
-                break;
-            case 'SAIR':
+                break;            
+                case 'SAIR':
+                // Implementar logout
                 logout();
-                setUserData(null);
-                setUserPoints(0);
                 navigate('/login');
-                console.log('Usuário deslogado');
                 break;
             default:
                 break;
@@ -115,16 +68,64 @@ export default function Header() {
     const handleUserProfileClick = (option) => {
         console.log(`Opção do perfil selecionada: ${option}`);
         setIsUserProfileOpen(false);
-        
+        setIsMobileMenuOpen(false);
+
+        // Verificar se usuário está logado
+        if (!isLoggedIn) {
+            alert('Você precisa estar logado para acessar esta funcionalidade. Faça login para continuar.');
+            navigate('/login');
+            return;
+        }
+
         // Aqui você pode adicionar a lógica para cada opção do perfil
         switch(option) {
             case 'MINHA CONTA':
+                // Redirecionar para página de perfil
                 navigate('/perfil');
-                console.log('Abrindo página de perfil');
                 break;
             case 'USUÁRIOS':
-                // Implementar página de usuários se necessário
-                console.log('Abrindo página de usuários');
+                // Redirecionar para página de usuários
+                navigate('/usuarios');
+                break;
+            case 'GERENCIAR USUÁRIOS':
+                // Redirecionar para página de administração de usuários
+                navigate('/admin/usuarios');
+                break;
+            default:
+                break;
+        }
+    };
+
+    // Função para lidar com cliques no menu mobile
+    const handleMobileMenuClick = (option) => {
+        setIsMobileMenuOpen(false);
+
+        // Verificar se usuário está logado para opções que requerem autenticação
+        if ((option === 'MINHA CONTA' || option === 'USUÁRIOS') && !isLoggedIn) {
+            alert('Você precisa estar logado para acessar esta funcionalidade. Faça login para continuar.');
+            navigate('/login');
+            return;
+        }
+
+        switch(option) {
+            case 'INICIO':
+                navigate('/');
+                break;
+            case 'TERMOS':
+                navigate('/termos');
+                break;
+            case 'CONTATO':
+                navigate('/contato');
+                break;
+            case 'MINHA CONTA':
+                navigate('/perfil');
+                break;
+            case 'USUÁRIOS':
+                navigate('/usuarios');
+                break;
+            case 'SAIR':
+                logout();
+                navigate('/login');
                 break;
             default:
                 break;
@@ -151,6 +152,23 @@ export default function Header() {
         };
     }, [isSettingsOpen, isUserProfileOpen]);
 
+    // Hook para fechar menu mobile ao pressionar ESC
+    useEffect(() => {
+        const handleEscapeKey = (event) => {
+            if (event.key === 'Escape') {
+                setIsMobileMenuOpen(false);
+            }
+        };
+
+        if (isMobileMenuOpen) {
+            document.addEventListener('keydown', handleEscapeKey);
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleEscapeKey);
+        };
+    }, [isMobileMenuOpen]);
+
     return (
         <header>
             <div className="header-container">
@@ -160,18 +178,31 @@ export default function Header() {
                     </Link>
                 </div>
 
+                {/* Botão Hamburger para Mobile */}
+                <button 
+                    className="hamburger-btn"
+                    onClick={toggleMobileMenu}
+                    aria-label="Menu"
+                >
+                    <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+                    <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+                    <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+                </button>
+
                 <div className="right-section">
                     <div className="nav-section">
                         <Link to="/" className="nav-link">INICIO</Link>
                     </div>
 
+
+                    {/* Perfil do Usuário */}
                     <div className="user-profile" ref={userProfileDropdownRef} onClick={toggleUserProfile}>
                         <img 
-                            src={currentUserData.avatar} 
+                            src={require("../../assets/images/user-profile 1.png")} 
                             alt="Avatar" 
                             className="avatar" 
                         />
-                        <span className="username">{currentUserData.name}</span>
+                        <span className="username">{userData?.nome || 'USUARIO'}</span>
                         <span className="dropdown-arrow">▼</span>
                         
                         {/* Dropdown Menu do Perfil */}
@@ -191,18 +222,26 @@ export default function Header() {
                                     >
                                         USUÁRIOS
                                     </div>
+                                    {/* Opção de administrador pode ser adicionada baseada no tipo de usuário */}
+                                    <div 
+                                        className="user-dropdown-item admin-item" 
+                                        onClick={() => handleUserProfileClick('GERENCIAR USUÁRIOS')}
+                                    >
+                                        GERENCIAR USUÁRIOS
+                                    </div>
                                 </div>
                             </div>
                         )}
                     </div>
 
+                    {/* TESTE: Sempre mostrar para debug */}
                     <div className="points-section">
                         <img 
-                            src={currentPointsData.medalIcon} 
+                            src={require("../../assets/images/image 33.png")} 
                             alt="Medalha" 
                             className="medal-icon" 
                         />
-                        <span className="points-number">{currentPointsData.points}</span>
+                        <span className="points-number">{userData ? userData.pontuacao : '0'}</span>
                     </div>
 
                     <div className="settings-section" ref={settingsDropdownRef} onClick={toggleSettings}>
@@ -240,7 +279,87 @@ export default function Header() {
                         )}
                     </div>
                 </div>
-            </div>  
+            </div>
+
+            {/* Menu Mobile Overlay */}
+            {isMobileMenuOpen && (
+                <div className="mobile-menu-overlay" onClick={toggleMobileMenu}>
+                    <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+                        {/* Header do Menu Mobile */}
+                        <div className="mobile-menu-header">
+                            <button 
+                                className="mobile-menu-close"
+                                onClick={toggleMobileMenu}
+                                aria-label="Fechar menu"
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        {/* Perfil do Usuário no Menu Mobile */}
+                        <div className="mobile-user-profile">
+                            <div className="mobile-user-info">
+                                <img 
+                                    src={require("../../assets/images/user-profile 1.png")} 
+                                    alt="Avatar" 
+                                    className="mobile-avatar" 
+                                />
+                                <div className="mobile-user-details">
+                                    <span className="mobile-username">{userData ? userData.nome : 'USUARIO'}</span>
+                                    <div className="mobile-points">
+                                        <img 
+                                            src={require("../../assets/images/image 33.png")} 
+                                            alt="Medalha" 
+                                            className="mobile-medal" 
+                                        />
+                                        <span className="mobile-points-number">{userData ? userData.pontuacao : '0'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Opções do Menu Mobile */}
+                        <div className="mobile-menu-options">
+                            <div 
+                                className="mobile-menu-item"
+                                onClick={() => handleMobileMenuClick('INICIO')}
+                            >
+                                INICIO
+                            </div>
+                            <div 
+                                className="mobile-menu-item"
+                                onClick={() => handleMobileMenuClick('TERMOS')}
+                            >
+                                TERMOS
+                            </div>
+                            <div 
+                                className="mobile-menu-item"
+                                onClick={() => handleMobileMenuClick('CONTATO')}
+                            >
+                                CONTATO
+                            </div>
+                            <div 
+                                className="mobile-menu-item"
+                                onClick={() => handleMobileMenuClick('MINHA CONTA')}
+                            >
+                                MINHA CONTA
+                            </div>
+                            <div 
+                                className="mobile-menu-item"
+                                onClick={() => handleMobileMenuClick('USUÁRIOS')}
+                            >
+                                USUÁRIOS
+                            </div>
+                            <div 
+                                className="mobile-menu-item mobile-menu-item-logout"
+                                onClick={() => handleMobileMenuClick('SAIR')}
+                            >
+                                SAIR
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </header>
     );
 }

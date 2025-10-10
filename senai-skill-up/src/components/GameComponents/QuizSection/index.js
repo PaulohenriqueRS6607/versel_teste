@@ -94,6 +94,7 @@ export default function QuizSection({ onQuizSelect }) {
     };
     return (
         <div className="questionarios-container">
+            <img src={require("../../../assets/images/slogan.svg").default} alt="Quiz" className="quiz-slogan" />
             <div className="questionarios-pesquisa-container">
                 <input 
                     placeholder="Pesquisar questionário..." 

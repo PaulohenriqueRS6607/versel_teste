@@ -8,7 +8,7 @@ export default function Intro() {
     
     return (
         <div className="intro" id="inicio">
-            <img className="imgIntroMobile" src="" alt="Imagem Mobile" />
+            <img className="imgIntroMobile" src={imgIntro} alt="Imagem Mobile" />
             <img className="imgIntro" src={imgIntro} alt="Imagem Intro" />
             <div className="Skill">
                 <h1 id="Senai">SENAI</h1>
