@@ -6,7 +6,7 @@ class AuthService {
   // Realizar login
   async login(email, senha) {
     try {
-      const response = await api.post('/auth/login', { email, senha });
+      const response = await api.post('/usuarios/login', { email, senha });
       return {
         success: true,
         data: response.data
@@ -22,7 +22,7 @@ class AuthService {
   // Realizar cadastro
   async register(userData) {
     try {
-      const response = await api.post('/auth/register', userData);
+      const response = await api.post('/usuarios/cadastro', userData);
       return {
         success: true,
         data: response.data

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Configuração da API
 const API_CONFIG = {
-  BASE_URL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api',
+  BASE_URL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/',
   TIMEOUT: parseInt(process.env.REACT_APP_API_TIMEOUT) || 10000,
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000,
