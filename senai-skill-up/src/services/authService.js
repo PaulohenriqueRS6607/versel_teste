@@ -47,20 +47,21 @@ class AuthService {
   }
 
   // Obter dados do usuário
-  async getUserProfile(userId) {
+  async getUserProfile() { 
     try {
-      const response = await api.get(`/usuarios/${userId}`);
-      return {
-        success: true,
-        data: response.data
-      };
+        
+        const response = await api.get(`/usuarios/me`);
+        return {
+            success: true,
+            data: response.data
+        };
     } catch (error) {
-      return {
-        success: false,
-        message: error.message || 'Erro ao buscar perfil'
-      };
+        return {
+            success: false,
+            message: error.message || 'Erro ao buscar perfil'
+        };
     }
-  }
+}
 
   // Atualizar perfil
   async updateProfile(userId, userData) {

@@ -1,23 +1,36 @@
 import { useState, useEffect } from 'react';
-import authService from '../services/authService';
+import authService from '../services/authService'; // Garanta que este caminho está correto
 
 export const useAuth = () => {
     const [userData, setUserData] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    // ESTA É A PARTE ATUALIZADA
     useEffect(() => {
-        const initAuth = () => {
-            // Verifica se já está autenticado
-            const currentUser = authService.getCurrentUser();
-            
-            if (currentUser && authService.isAuthenticated()) {
-                setUserData(currentUser);
-                setIsLoggedIn(true);
-            } else {
-                setUserData(null);
-                setIsLoggedIn(false);
+        const initAuth = async () => {
+            // 1. Verifica se existe um token salvo (a única coisa que importa)
+            const token = sessionStorage.getItem('authToken'); // ou localStorage
+
+            if (token) {
+                try {
+                    // 2. Se tem token, VAI AO BACKEND buscar os dados frescos do perfil
+                    const response = await authService.getUserProfile();
+                    
+                    if (response.success) {
+                        // 3. Se a busca deu certo, atualiza o estado com os dados do backend
+                        setUserData(response.data);
+                        setIsLoggedIn(true);
+                    } else {
+                        // 4. Se o token for inválido (expirado, etc.), faz o logout
+                        logout();
+                    }
+                } catch (error) {
+                    console.error("Token encontrado, mas falha ao buscar perfil.", error);
+                    logout();
+                }
             }
+            // Avisa que o carregamento inicial terminou
             setLoading(false);
         };
 
@@ -26,18 +39,24 @@ export const useAuth = () => {
 
     const login = async (email, senha) => {
         try {
-            console.log('🔐 Iniciando login com email:', email);
             const result = await authService.login(email, senha);
             
-            if (result.success) {
-                setUserData(result.data.user);
-                setIsLoggedIn(true);
-                return result;
-            } else {
-                throw new Error(result.message);
+            if (result.success && result.data.token) {
+                // Salva o token no storage
+                sessionStorage.setItem('authToken', result.data.token);
+
+                // IMPORTANTE: Após o login, busca os dados do perfil imediatamente
+                const profileResponse = await authService.getUserProfile();
+                if (profileResponse.success) {
+                    setUserData(profileResponse.data);
+                    setIsLoggedIn(true);
+                    return { success: true };
+                }
             }
+            throw new Error(result.message || 'Falha no login');
         } catch (error) {
-            console.error('❌ Erro no login:', error);
+            console.error('❌ Erro no hook de login:', error);
+            logout(); // Garante que tudo esteja limpo em caso de falha
             throw error;
         }
     };
@@ -48,9 +67,10 @@ export const useAuth = () => {
         setIsLoggedIn(false);
     };
 
+    // A função de update pode ser mantida, mas a lógica principal já está no AuthContext
     const updateUserData = async (newUserData) => {
         try {
-            const result = await authService.updateProfile(newUserData.userId || newUserData.id, newUserData);
+            const result = await authService.updateProfile(newUserData.id, newUserData);
             if (result.success) {
                 setUserData(result.data);
             }
