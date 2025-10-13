@@ -49,7 +49,7 @@ class AuthService {
   // Obter dados do usuário
   async getUserProfile(userId) {
     try {
-      const response = await api.get(`/users/${userId}`);
+      const response = await api.get(`/usuarios/${userId}`);
       return {
         success: true,
         data: response.data
@@ -65,7 +65,7 @@ class AuthService {
   // Atualizar perfil
   async updateProfile(userId, userData) {
     try {
-      const response = await api.put(`/users/${userId}`, userData);
+      const response = await api.put(`/usuarios/${userId}`, userData);
       return {
         success: true,
         data: response.data
