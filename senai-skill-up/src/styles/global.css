@@ -2,6 +2,20 @@
    ESTILOS GLOBAIS DO PROJETO
    ======================================== */
 
+/* No Scroll Styles */
+.no-scroll {
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+.no-scroll body {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+}
+
 /* Responsividade removida */
 
 /* Reset básico */

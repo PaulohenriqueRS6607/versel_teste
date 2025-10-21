@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
 @import './responsive.css';
 
-
 ul {
     list-style: none;
 }
@@ -183,7 +182,8 @@ form.sign-in-form {
     border-color: #4481eb;
 }
 
-.btn {
+/* Aqui renomeei .btn para .primary-button */
+.primary-button {
     width: 150px;
     background-color: #5995fd;
     border: none;
@@ -198,7 +198,7 @@ form.sign-in-form {
     transition: 0.5s;
 }
 
-.btn:hover {
+.primary-button:hover {
     background-color: #4d84e2;
 }
 
@@ -216,6 +216,17 @@ form.sign-in-form {
 .forgot-password-btn:hover {
     color: #4d84e2;
     text-decoration: none;
+}
+
+/* Também renomeei .btn.transparent para .primary-button.transparent */
+.primary-button.transparent {
+    margin: 0;
+    background: none;
+    border: 2px solid #fff;
+    width: 130px;
+    height: 41px;
+    font-weight: 600;
+    font-size: 0.8rem;
 }
 
 .panels-container {
@@ -241,7 +252,6 @@ form.sign-in-form {
     border-radius: 50%;
     z-index: 6;
 }
-
 
 .image {
     width: 100%;
@@ -348,4 +358,3 @@ body {
     align-items: initial !important;
     background: #fff;
 }
-
