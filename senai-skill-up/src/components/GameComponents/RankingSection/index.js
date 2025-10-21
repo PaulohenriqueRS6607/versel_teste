@@ -6,6 +6,7 @@ import image8 from "../../../assets/images/image 8.svg";
 import image31 from "../../../assets/images/image 31.svg";
 import rankingSlogan from "../../../assets/images/Group 13.svg";
 import { getRankingGlobal } from "../../../services/rankingService";
+import Loader from "../../common/Loader";
 import "./style.css";
 
 export default function RankingSection() {
@@ -76,7 +77,9 @@ export default function RankingSection() {
             </div>
             <div className="ranking-lista">
                 {loading ? (
-                    <p>Carregando ranking...</p>
+                    <div className="loader-container">
+                        <Loader />
+                    </div>
                 ) : filteredRanking.length > 0 ? (
                     filteredRanking.map((user, idx) => (
                         <div

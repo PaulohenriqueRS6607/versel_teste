@@ -1,4 +1,4 @@
-.input-field {
+.password-field-container {
     position: relative;
     display: flex;
     align-items: center;
@@ -12,7 +12,7 @@
     position: relative;
 }
 
-.input-field input {
+.password-field-container input {
     background: none;
     outline: none;
     border: none;
@@ -25,12 +25,12 @@
     padding-right: 60px;
 }
 
-.input-field input::placeholder {
+.password-field-container input::placeholder {
     color: #aaa;
     font-weight: 500;
 }
 
-.input-field i {
+.password-field-container i {
     text-align: center;
     line-height: 55px;
     color: #acacac;
@@ -75,7 +75,7 @@
 }
 
 /* Estilo para quando a senha está visível */
-.input-field input[type="text"] + .password-toggle i {
+.password-field-container input[type="text"] + .password-toggle i {
     color: #4CAF50;
 }
 

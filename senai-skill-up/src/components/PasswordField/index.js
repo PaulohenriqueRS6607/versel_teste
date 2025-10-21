@@ -16,7 +16,7 @@ const PasswordField = ({
     };
 
     return (
-        <div className={`input-field ${className}`}>
+        <div className={`password-field-container ${className}`}>
             <i className={icon}></i>
             <input 
                 type={showPassword ? "text" : "password"} 

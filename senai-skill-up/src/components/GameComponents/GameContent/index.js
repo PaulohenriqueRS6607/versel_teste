@@ -2,15 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RankingSection from '../RankingSection';
 import QuizSection from '../QuizSection';
-import { ModalQuestionario } from '../../';
 import { getRankingGlobal } from '../../../services/rankingService';
-import authService from '../../../services/authService';
 import "./style.css";
 
 export default function GameContent() {
     const [ranking, setRanking] = useState([]);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [questionarioSelecionado, setQuestionarioSelecionado] = useState(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
@@ -48,51 +44,11 @@ export default function GameContent() {
     }, [navigate]);
 
     const handleQuizSelect = (questionario) => {
-        setQuestionarioSelecionado(questionario);
-        setModalOpen(true);
+        // Navegar para a página do jogo/quiz com o tema selecionado
+        navigate('/jogo', { state: { temaId: questionario?.id } });
     };
 
-    const handleQuizCompletion = async (resultado) => {
-        try {
-            const currentUser = authService.getCurrentUser();
-            if (!currentUser) {
-                console.error('Usuário não autenticado');
-                return;
-            }
-
-            // Salvar resultado da partida
-            const partidaData = {
-                userId: currentUser.userId || currentUser.id,
-                temaId: questionarioSelecionado?.temaId || 'unknown',
-                pontuacao: resultado.pontuacao || 0,
-                totalPerguntas: resultado.totalPerguntas || 1,
-                acertos: resultado.acertos || 0
-            };
-
-            // Encontrar o serviço correto para submeter resposta
-            const { submitResposta } = await import('../../../services/quizService');
-            await submitResposta(partidaData);
-
-            // Atualizar ranking após completar quiz
-            const rankingResponse = await getRankingGlobal();
-            if (rankingResponse.success) {
-                setRanking(rankingResponse.data);
-            }
-
-            // Fechar modal e mostrar resultado
-            setModalOpen(false);
-            
-            // Redirecionar para página de resultado
-            if (resultado.acertos === resultado.totalPerguntas) {
-                navigate('/Correto');
-            } else {
-                navigate('/Errado');
-            }
-
-        } catch (error) {
-            console.error('Erro ao processar resultado do quiz:', error);
-        }
-    };
+    // O fluxo de conclusão do quiz agora é tratado em `GameQuiz` na rota `/jogo`
 
     if (loading) {
         return (
@@ -111,12 +67,6 @@ export default function GameContent() {
                 <QuizSection onQuizSelect={handleQuizSelect} />
             </div>
             <div className="game-spacing"></div>
-            <ModalQuestionario 
-                open={modalOpen} 
-                onClose={() => setModalOpen(false)} 
-                questionario={questionarioSelecionado || {}} 
-                onQuizCompletion={handleQuizCompletion}
-            />
         </>
     );
 }

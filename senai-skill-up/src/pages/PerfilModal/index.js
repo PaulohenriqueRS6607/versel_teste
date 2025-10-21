@@ -5,8 +5,8 @@ import editIcon from '../../assets/images/Vector.png';
 import trophyIcon from '../../assets/images/trophy 1.svg';
 import pointsIcon from '../../assets/images/image 33.png';
 
-export default function PerfilModal({ isMyProfile = true }) {
-  const [user, setUser] = useState({
+export default function PerfilModal({ isMyProfile = true, onClose, user: propUser, isOpen = true }) {
+  const [user, setUser] = useState(propUser || {
     name: 'Usuario123',
     email: 'Usuario123@gmail.com',
     status: 'online',
@@ -36,15 +36,16 @@ export default function PerfilModal({ isMyProfile = true }) {
     setIsEditing(false);
   };
 
+  if (!isOpen) return null;
+
   return (
-    <>
-      <Header />
-      <div className="perfil-modal-overlay">
-        <div className="perfil-modal-container">
+    <div className="perfil-modal-wrapper">
+      <div className="perfil-modal-overlay" onClick={onClose}>
+        <div className="perfil-modal-container" onClick={e => e.stopPropagation()}>
           {/* Botão de fechar */}
-          <div className="perfil-close-btn" onClick={() => window.history.back()}>
+          <button className="perfil-close-btn" onClick={onClose}>
             ×
-          </div>
+          </button>
           
           {/* Ícone de edição - só aparece no meu perfil */}
           {isMyProfile && (
@@ -128,7 +129,7 @@ export default function PerfilModal({ isMyProfile = true }) {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

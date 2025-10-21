@@ -1,0 +1,43 @@
+{
+  "files": {
+    "main.css": "/static/css/main.060ba966.css",
+    "main.js": "/static/js/main.5ff3015b.js",
+    "static/media/Group 11.png": "/static/media/Group 11.03a8a826b87f52bc03dd.png",
+    "static/media/Group 13.png": "/static/media/Group 13.ef21029232ae243ec866.png",
+    "static/media/image 31.svg": "/static/media/image 31.44b5e38ffe4e363bb2020f3a191a8697.svg",
+    "static/media/image 8.svg": "/static/media/image 8.65f6ae0ec48bdb599afb78fda9131dce.svg",
+    "static/media/image 7.svg": "/static/media/image 7.f2d9772477ce5e8e9c47fc07d9505ad1.svg",
+    "static/media/image 6.svg": "/static/media/image 6.b90440738d77fcd819b91b334ac1e155.svg",
+    "static/media/instagram 1.svg": "/static/media/instagram 1.3c868078a9e6d2f76e0be2edf21f0fbf.svg",
+    "static/media/people-group (1) 1.svg": "/static/media/people-group (1) 1.50617de6c95eb105b2f19baa331a1f12.svg",
+    "static/media/search 1.svg": "/static/media/search 1.dbfc2892a77a6273cb97f81fe6cd84cd.svg",
+    "static/media/image 2.svg": "/static/media/image 2.fb80a99b7da9e5e52eebfa61f5efebd8.svg",
+    "static/media/github 1.svg": "/static/media/github 1.fbe2522b7c525113f30272ef73fff704.svg",
+    "static/media/cross-circle 1.svg": "/static/media/cross-circle 1.abdd9e01d212751c9ae7566e71a10cc7.svg",
+    "static/media/Gameboy.svg": "/static/media/Gameboy.14d1b9ad01468e3667f1ac3ee7118dd5.svg",
+    "static/media/game-controller 1.svg": "/static/media/game-controller 1.e24bf4721b8e87e89917650cd4adfe3d.svg",
+    "static/media/trophy 1.svg": "/static/media/trophy 1.ef5530e602f9283fd9d5f5bb14709969.svg",
+    "static/media/discord 1.svg": "/static/media/discord 1.7632aafd7a6646e7261c0de55580b1ff.svg",
+    "static/media/slogan.svg": "/static/media/slogan.d3dff29ffad07a71b01321dd0e552c7f.svg",
+    "static/media/question 1.svg": "/static/media/question 1.4a695a8eb4c327526f189e939f9232b0.svg",
+    "static/media/bagulho.svg": "/static/media/bagulho.e9adb35512d4b26f15a33dfc423b7a3c.svg",
+    "static/media/slogan (1).svg": "/static/media/slogan (1).57ef08fca576bdc2b9c3738dbc92c92d.svg",
+    "static/media/Group 14.png": "/static/media/Group 14.6e9e058f8970d67e445b.png",
+    "static/media/add.svg": "/static/media/add.1113f7aec305df1ceedd07d32d215194.svg",
+    "static/media/slogan com brilhos.svg": "/static/media/slogan com brilhos.8fc1cd1f8921553117c87c642a25b24d.svg",
+    "static/media/Group 13.svg": "/static/media/Group 13.8ca62d24e775cfd5edddd3d86fca2b99.svg",
+    "static/media/Group 50.svg": "/static/media/Group 50.25c64f9144640106de4365b09397ff22.svg",
+    "static/media/SENAI SKILL-UP.svg": "/static/media/SENAI SKILL-UP.8fafd702f983fa75762e585959c78b34.svg",
+    "index.html": "/index.html",
+    "static/media/mensagem.svg": "/static/media/mensagem.828b852f2e3e5297eac8ba2a76e4caf5.svg",
+    "static/media/Vector (1).svg": "/static/media/Vector (1).78936d91ffa7d227d8c6e01d72d0891c.svg",
+    "static/media/Vector (2).svg": "/static/media/Vector (2).06597fe582fa53b4ff5fb2fd42620de6.svg",
+    "static/media/Vector.svg": "/static/media/Vector.59325d5b3cd8c249ea98a24c186ad781.svg",
+    "main.060ba966.css.map": "/static/css/main.060ba966.css.map",
+    "main.5ff3015b.js.map": "/static/js/main.5ff3015b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.060ba966.css",
+    "static/js/main.5ff3015b.js"
+  ]
+}

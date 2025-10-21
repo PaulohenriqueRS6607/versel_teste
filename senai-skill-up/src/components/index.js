@@ -8,7 +8,6 @@ export { default as PasswordField } from './PasswordField';
 
 // Game Components
 export { default as Panel } from './Panel/Panel';
-export { default as ModalQuestionario } from './ModalQuestionario';
 
 // Feedback Components
 export { default as Correto } from './correto';
@@ -42,14 +41,6 @@ export { default as UserProfile } from './UsersComponents/UserProfile';
 export { default as UserManagementTable } from './UsersComponents/UserManagementTable';
 export { default as UserEditModal } from './UsersComponents/UserEditModal';
 export { default as PermissionTypeModal } from './UsersComponents/PermissionTypeModal';
-
-
-// Profile Components
-export { default as ProfileHeader } from './ProfileComponents/ProfileHeader';
-export { default as ProfileStatus } from './ProfileComponents/ProfileStatus';
-export { default as ProfileRanking } from './ProfileComponents/ProfileRanking';
-export { default as ProfileHistory } from './ProfileComponents/ProfileHistory';
-export { default as DeleteAccountModal } from './ProfileComponents/DeleteAccountModal';
 
 // Security Components
 export { default as ProtectedRoute } from './ProtectedRoute';
