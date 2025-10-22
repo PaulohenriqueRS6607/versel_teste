@@ -1,5 +1,3 @@
-/* Responsividade removida */
-
 header {
   background-color: #00A2FF;
   padding: 10px 20px;
@@ -19,12 +17,10 @@ header {
 .right-section {
   display: flex;
   align-items: center;
-  gap: 45px; /* distância entre todos os elementos */
+  gap: 45px;
   margin-left: auto;
   flex: 0 0 auto;
 }
-
-/* Responsividade removida */
 
 .logo-section {
   flex: 0 0 auto;
@@ -73,11 +69,6 @@ header {
   margin-right: 5px;
 }
 
-.user-profile .dropdown-arrow {
-  font-size: 10px;
-  color: white;
-}
-
 .points-section {
   display: flex;
   align-items: center;
@@ -96,7 +87,7 @@ header {
 }
 
 .settings-section {
-  margin-left: 80px; /* distância dos pontos até a engrenagem */
+  margin-left: 80px;
   position: relative;
 }
 
@@ -106,7 +97,6 @@ header {
   cursor: pointer;
 }
 
-/* Dropdown Menu Styles */
 .settings-dropdown {
   position: absolute;
   top: 100%;
@@ -159,7 +149,6 @@ header {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Animação para o dropdown */
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -171,7 +160,6 @@ header {
   }
 }
 
-/* Fechar dropdown ao clicar fora */
 .settings-section:focus-within .settings-dropdown {
   display: block;
 }
@@ -427,11 +415,6 @@ header {
   background-color: rgba(255, 107, 107, 0.1);
 }
 
-/* ========================================
-   RESPONSIVIDADE DO HEADER
-   ======================================== */
-
-/* Tablet e Mobile */
 @media (max-width: 768px) {
   .hamburger-btn {
     display: flex;
@@ -446,7 +429,6 @@ header {
   }
 }
 
-/* Mobile Pequeno */
 @media (max-width: 480px) {
   .mobile-menu {
     width: 100vw;

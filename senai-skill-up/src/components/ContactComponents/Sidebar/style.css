@@ -26,3 +26,17 @@
     background: #cfdbe6;
     font-weight: bold;
 }
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .contact-sidebar {
+        display: none;
+    }
+
+    .contact-sidebar-btn {
+        display: none;
+    }
+}

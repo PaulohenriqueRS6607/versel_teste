@@ -118,6 +118,91 @@
     color: #000000;
 }
 
-.contact-image {
-    /* ajuste para imagem ao lado do form */
+
+/* ========================================
+   RESPONSIVIDADE MOBILE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .contact-main {
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        border-radius: 0;
+        background-color: #fff;
+        margin-top: 0;
+    }
+
+    .contact-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .contact-image {
+        display: none;
+    }
+
+    .contact-form {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .contact-form-input,
+    .contact-form-textarea {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .contact-form-input {
+        height: 45px;
+        font-size: 16px;
+    }
+
+    .contact-form-textarea {
+        height: 120px;
+        font-size: 16px;
+    }
+
+    .contact-form-button {
+        width: 100%;
+        padding: 15px 0;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    .contact-title {
+        font-size: 18px;
+        padding-left: 15px;
+        margin-bottom: 10px;
+    }
+
+    .contact-title::before {
+        width: 4px;
+        height: 18px;
+    }
+
+    .contact-description {
+        font-size: 14px;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-main {
+        padding: 15px;
+    }
+
+    .contact-title {
+        font-size: 16px;
+    }
+
+    .contact-description {
+        font-size: 13px;
+    }
+
+    .contact-form-input,
+    .contact-form-textarea {
+        font-size: 14px;
+    }
 }

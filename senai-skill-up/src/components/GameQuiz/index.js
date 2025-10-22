@@ -1,52 +1,147 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Header from '../header';
+import Correto from '../correto';
+import Errado from '../errado';
 import './style.css';
 
-// Mock quiz data
-const mockQuiz = {
-  id: 'mock-quiz-123',
-  tema: 'Conhecimentos Gerais',
-  perguntas: [
-    {
-      id: 1,
-      texto: 'Qual é a capital do Brasil?',
-      alternativas: [
-        { id: 1, texto: 'Rio de Janeiro', correta: false },
-        { id: 2, texto: 'São Paulo', correta: false },
-        { id: 3, texto: 'Brasília', correta: true },
-        { id: 4, texto: 'Belo Horizonte', correta: false },
-      ]
-    },
-    {
-      id: 2,
-      texto: 'Quem pintou a Mona Lisa?',
-      alternativas: [
-        { id: 1, texto: 'Vincent van Gogh', correta: false },
-        { id: 2, texto: 'Pablo Picasso', correta: false },
-        { id: 3, texto: 'Leonardo da Vinci', correta: true },
-        { id: 4, texto: 'Michelangelo', correta: false },
-      ]
-    },
-    {
-      id: 3,
-      texto: 'Qual é o maior planeta do sistema solar?',
-      alternativas: [
-        { id: 1, texto: 'Terra', correta: false },
-        { id: 2, texto: 'Júpiter', correta: true },
-        { id: 3, texto: 'Saturno', correta: false },
-        { id: 4, texto: 'Marte', correta: false },
-      ]
+// Mock data
+const mockQuizzes = {
+  1: {
+    id: 'quiz-1',
+    tema: 'Conhecimentos Gerais',
+    perguntas: [
+      {
+        id: 1,
+        texto: 'Qual é a capital do Brasil?',
+        alternativas: [
+          { id: 1, texto: 'Rio de Janeiro', correta: false },
+          { id: 2, texto: 'São Paulo', correta: false },
+          { id: 3, texto: 'Brasília', correta: true },
+          { id: 4, texto: 'Belo Horizonte', correta: false },
+        ]
+      },
+      {
+        id: 2,
+        texto: 'Quem pintou a Mona Lisa?',
+        alternativas: [
+          { id: 1, texto: 'Vincent van Gogh', correta: false },
+          { id: 2, texto: 'Pablo Picasso', correta: false },
+          { id: 3, texto: 'Leonardo da Vinci', correta: true },
+          { id: 4, texto: 'Michelangelo', correta: false },
+        ]
+      },
+      {
+        id: 3,
+        texto: 'Qual é o maior planeta do sistema solar?',
+        alternativas: [
+          { id: 1, texto: 'Terra', correta: false },
+          { id: 2, texto: 'Júpiter', correta: true },
+          { id: 3, texto: 'Saturno', correta: false },
+          { id: 4, texto: 'Marte', correta: false },
+        ]
+      }
+    ]
+  },
+  2: {
+    id: 'quiz-2',
+    tema: 'Tecnologia',
+    perguntas: [
+      {
+        id: 4,
+        texto: 'Qual linguagem é usada para desenvolvimento web front-end?',
+        alternativas: [
+          { id: 1, texto: 'Python', correta: false },
+          { id: 2, texto: 'JavaScript', correta: true },
+          { id: 3, texto: 'Java', correta: false },
+          { id: 4, texto: 'C++', correta: false },
+        ]
+      },
+      {
+        id: 5,
+        texto: 'O que significa HTML?',
+        alternativas: [
+          { id: 1, texto: 'HyperText Markup Language', correta: true },
+          { id: 2, texto: 'High Tech Modern Language', correta: false },
+          { id: 3, texto: 'Home Tool Markup Language', correta: false },
+          { id: 4, texto: 'Hyperlink and Text Markup Language', correta: false },
+        ]
+      }
+    ]
+  }
+};
+
+const mockGameQuizService = {
+  iniciarQuiz: async (temaId) => {
+    await new Promise(resolve => setTimeout(resolve, 500)); // Simular delay
+    const quiz = mockQuizzes[temaId];
+    if (!quiz) throw new Error('Quiz não encontrado');
+    
+    return {
+      id: quiz.id,
+      perguntaAtual: {
+        ...quiz.perguntas[0],
+        tema: quiz.tema,
+        totalPerguntas: quiz.perguntas.length,
+        numeroPergunta: 1
+      }
+    };
+  },
+
+  getPerguntaAtual: async (quizId) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const quiz = Object.values(mockQuizzes).find(q => q.id === quizId);
+    if (!quiz) throw new Error('Quiz não encontrado');
+    
+    return {
+      ...quiz.perguntas[0],
+      tema: quiz.tema,
+      totalPerguntas: quiz.perguntas.length,
+      numeroPergunta: 1
+    };
+  },
+
+  submeterResposta: async (quizId, perguntaId, alternativaId) => {
+    await new Promise(resolve => setTimeout(resolve, 400));
+    const quiz = Object.values(mockQuizzes).find(q => q.id === quizId);
+    if (!quiz) throw new Error('Quiz não encontrado');
+    
+    const perguntaAtualIndex = quiz.perguntas.findIndex(p => p.id === perguntaId);
+    const proximoIndex = perguntaAtualIndex + 1;
+    
+    if (proximoIndex < quiz.perguntas.length) {
+      return {
+        proximaPergunta: {
+          ...quiz.perguntas[proximoIndex],
+          tema: quiz.tema,
+          totalPerguntas: quiz.perguntas.length,
+          numeroPergunta: proximoIndex + 1
+        }
+      };
+    } else {
+      return { proximaPergunta: null };
     }
-  ]
+  },
+
+  finalizarQuiz: async (quizId) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return {
+      quizId,
+      pontuacao: Math.floor(Math.random() * 3) + 1,
+      totalPerguntas: 3,
+      tempoGasto: '2:30'
+    };
+  },
+
+  abandonarQuiz: async (quizId) => {
+    await new Promise(resolve => setTimeout(resolve, 200));
+    return { success: true };
+  }
 };
 
 export default function GameQuiz() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [timeLeft, setTimeLeft] = useState(120); // 2 minutos para mock
-  const [score, setScore] = useState(0);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(90); // 1 minuto e 30 segundos
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -55,50 +150,74 @@ export default function GameQuiz() {
   const [loading, setLoading] = useState(true);
   const [quizId, setQuizId] = useState(null);
   const [error, setError] = useState(null);
-
-  // Timer
-  useEffect(() => {
-    const timer = timeLeft > 0 && setInterval(() => {
-      setTimeLeft(timeLeft - 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [timeLeft]);
+  const [showResultScreen, setShowResultScreen] = useState(false);
+  
 
   // Carregar pergunta inicial
   useEffect(() => {
-    const iniciarQuiz = () => {
+    const iniciarQuiz = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        // Usar dados mockados
-        setQuizId(mockQuiz.id);
-        loadQuestion(0);
+        // Pegar temaId da navegação (se vier de outra página) ou usar padrão
+        const temaId = location.state?.temaId || 1; // Usar tema 1 como padrão
         
-        setLoading(false);
+        if (!temaId && !location.state?.quizId) {
+          setError('Quiz não encontrado');
+          setLoading(false);
+          return;
+        }
+        
+        if (temaId) {
+          // Iniciar novo quiz
+          const quizData = await mockGameQuizService.iniciarQuiz(temaId);
+          setQuizId(quizData.id);
+          setCurrentQuestion(quizData.perguntaAtual);
+        } else if (location.state?.quizId) {
+          // Continuar quiz existente
+          const quizIdExistente = location.state.quizId;
+          setQuizId(quizIdExistente);
+          const pergunta = await mockGameQuizService.getPerguntaAtual(quizIdExistente);
+          setCurrentQuestion(pergunta);
+        }
       } catch (err) {
         console.error('Erro ao carregar quiz:', err);
-        setError('Erro ao carregar o quiz');
+        setError('Erro ao conectar com backend');
+      } finally {
         setLoading(false);
       }
     };
 
     iniciarQuiz();
-  }, []);
-  
-  const loadQuestion = (index) => {
-    if (index >= 0 && index < mockQuiz.perguntas.length) {
-      setCurrentQuestion({
-        ...mockQuiz.perguntas[index],
-        tema: mockQuiz.tema,
-        totalPerguntas: mockQuiz.perguntas.length,
-        numeroPergunta: index + 1
-      });
-      setCurrentQuestionIndex(index);
-      setSelectedAnswer(null);
-      setShowResult(false);
+  }, [location.state]);
+
+  // Timer
+  useEffect(() => {
+    if (timeLeft > 0 && currentQuestion && !loading) {
+      const timer = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            // Finalizar o questionário quando o tempo acabar
+            if (quizId) {
+              mockGameQuizService.finalizarQuiz(quizId);
+              setShowResultScreen(true);
+              setShowResult(true);
+              setIsCorrect(false); // Considera como resposta errada por tempo esgotado
+            }
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    } else if (timeLeft === 0) {
+      // Tempo esgotado
+      alert('Tempo esgotado! O quiz será finalizado.');
+      navigate('/game');
     }
-  };
+  }, [timeLeft, currentQuestion, loading, navigate]);
 
   // Bloquear scroll
   useEffect(() => {
@@ -108,31 +227,65 @@ export default function GameQuiz() {
     };
   }, []);
 
-  // Finalizar quiz quando o tempo acabar
-  useEffect(() => {
-    if (timeLeft === 0) {
-      alert(`Tempo esgotado!\nVocê acertou ${score} de ${mockQuiz.perguntas.length} perguntas.`);
-      navigate('/game');
-    }
-  }, [timeLeft, score]);
-
   const handleAnswerSelect = (alternativa) => {
-    if (selectedAnswer !== null) return; // Prevenir múltiplos cliques
+    if (showResult || !quizId || !currentQuestion || showResultScreen) return;
     
+    setSelectedAnswer(alternativa.id);
+    setIsCorrect(alternativa.correta);
+    setShowResultScreen(true);
+  };
+
+  // Effect para controlar o timer de resultado
+  useEffect(() => {
+    if (showResultScreen) {
+      console.log('Timer iniciado para resultado');
+      const timer = setTimeout(() => {
+        console.log('Timer finalizado, avançando pergunta');
+        setShowResultScreen(false);
+        handleNextQuestion();
+      }, 4000);
+      
+      return () => {
+        console.log('Timer cancelado');
+        clearTimeout(timer);
+      };
+    }
+  }, [showResultScreen]);
+
+  const handleNextQuestion = async () => {
     try {
-      setSelectedAnswer(alternativa.id);
-      
-      // Verificar se a resposta está correta
-      const respostaCorreta = alternativa.correta;
-      
-      if (respostaCorreta) {
-        setScore(prevScore => prevScore + 1);
+      console.log('handleNextQuestion chamada', { quizId, currentQuestion: currentQuestion?.id, selectedAnswer });
+      if (!quizId || !currentQuestion || !selectedAnswer) {
+        console.log('Condições não atendidas para avançar pergunta');
+        return;
       }
       
-      setShowResult(true);
-      setIsCorrect(respostaCorreta);
-    } catch (error) {
-      console.error('Erro ao processar resposta:', error);
+      // Submeter resposta e obter próxima pergunta
+      const response = await mockGameQuizService.submeterResposta(
+        quizId,
+        currentQuestion.id,
+        selectedAnswer
+      );
+
+      console.log('Resposta do service:', response);
+
+      if (response.proximaPergunta) {
+        console.log('Carregando próxima pergunta:', response.proximaPergunta);
+        // Resetar estado e carregar próxima pergunta
+        setCurrentQuestion(response.proximaPergunta);
+        setSelectedAnswer(null);
+        setShowResult(false);
+        setIsCorrect(false);
+        setShowResultScreen(false);
+      } else {
+        console.log('Quiz finalizado, indo para resultados');
+        // Quiz finalizado, ir para tela de resultados
+        const resultados = await mockGameQuizService.finalizarQuiz(quizId);
+        navigate('/fim', { state: resultados });
+      }
+    } catch (err) {
+      console.error('Erro ao avançar pergunta:', err);
+      setError('Erro ao carregar próxima pergunta');
     }
   };
 
@@ -142,8 +295,14 @@ export default function GameQuiz() {
 
   const closeExitModal = () => setShowExitModal(false);
 
-  const confirmExit = () => {
-    // No need to call the service since we're using mock data
+  const confirmExit = async () => {
+    if (quizId) {
+      try {
+        await mockGameQuizService.abandonarQuiz(quizId);
+      } catch (err) {
+        console.error('Erro ao abandonar quiz:', err);
+      }
+    }
     navigate('/game');
   };
 
@@ -210,12 +369,17 @@ export default function GameQuiz() {
     );
   }
 
+  // Renderizar tela de resultado (correto/errado)
+  if (showResultScreen) {
+    return isCorrect ? <Correto /> : <Errado />;
+  }
+
   return (
     <div className="game-quiz-container">
       <div className="quiz-wrapper">
         <div className="quiz-paper-container">
           <div className="question-theme">{currentQuestion.tema || '-'}</div>
-          <div className="question-text">{currentQuestion.pergunta || 'Nenhuma pergunta disponível'}</div>
+          <div className="question-text">{currentQuestion.texto || 'Nenhuma pergunta disponível'}</div>
           <div className="alternatives-container">
             {currentQuestion.alternativas && currentQuestion.alternativas.length > 0 ? (
               currentQuestion.alternativas.map((alternativa) => (
@@ -236,34 +400,9 @@ export default function GameQuiz() {
               <>
                 <button className="alternative-btn" disabled>-</button>
                 <button className="alternative-btn" disabled>-</button>
-                <button className="alternative-btn" disabled>-</button>
-                <button className="alternative-btn" disabled>-</button>
               </>
             )}
           </div>
-          {showResult && (
-            <div className="result-section">
-              <div className={`result-message ${isCorrect ? 'correct' : 'incorrect'}`}>
-                {isCorrect ? '✅ RESPOSTA CORRETA!' : '❌ RESPOSTA INCORRETA!'}
-              </div>
-              <button 
-                className="next-btn" 
-                onClick={() => {
-                  if (currentQuestionIndex < mockQuiz.perguntas.length - 1) {
-                    loadQuestion(currentQuestionIndex + 1);
-                  } else {
-                    // End of quiz
-                    console.log('Fim do quiz! Pontuação:', score, 'de', mockQuiz.perguntas.length);
-                    // You can add navigation to results page here
-                    alert(`Quiz finalizado!\nVocê acertou ${score} de ${mockQuiz.perguntas.length} perguntas.`);
-                    navigate('/game');
-                  }
-                }}
-              >
-                {currentQuestionIndex < mockQuiz.perguntas.length - 1 ? 'PRÓXIMA PERGUNTA' : 'VER RESULTADO'}
-              </button>
-            </div>
-          )}
         </div>
         <div className="quiz-controls">
           <div className="timer">

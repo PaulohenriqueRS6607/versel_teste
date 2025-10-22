@@ -47,11 +47,11 @@ export default function UsersRankingTable({
 
       {/* Cabeçalho da tabela */}
       <div className="table-header">
-        <div className="header-cell">Pontos</div>
-        <div className="header-cell">Nome</div>
-        <div className="header-cell">Posição</div>
-        <div className="header-cell">Status</div>
-        <div className="header-cell">Perfil</div>
+        <div className="header-cell header-pontos">Pontos</div>
+        <div className="header-cell header-nome">Nome</div>
+        <div className="header-cell header-posicao">Posição</div>
+        <div className="header-cell header-status">Status</div>
+        <div className="header-cell header-perfil">Perfil</div>
       </div>
 
       {/* Lista de usuários */}
@@ -62,30 +62,39 @@ export default function UsersRankingTable({
           </div>
         ) : (
           users.map((user) => (
-            <div key={user.id} className="user-row">
-              <div className="user-cell">
-                <span className="user-points">{user.pontos || 0}</span>
+            <div 
+              key={user.id} 
+              className="user-row user-card"
+              onClick={() => onViewProfile && onViewProfile(user)}
+              style={{ cursor: 'pointer' }}
+              title="Clique para ver o perfil"
+            >
+              <div className="user-cell user-points">
+                <span className="points-value">{user.pontos || 0}</span>
               </div>
-              <div className="user-cell">
+              <div className="user-cell user-info">
                 <span className="user-name">{user.nome}</span>
               </div>
               <div className="user-cell">
-                <span className="user-position">{user.rank}°</span>
+                <span className="user-rank">{user.rank}°</span>
               </div>
               <div className="user-cell">
                 <div className="status-indicator">
                   <div 
-                    className={`status-dot ${user.status === 'online' ? '' : 'offline'}`}
+                    className={`status-dot user-status ${user.status === 'online' ? '' : 'offline'}`}
                   />
                 </div>
               </div>
               <div className="user-cell actions-cell">
                 <button
-                  className="action-btn view-profile-btn"
-                  onClick={() => onViewProfile && onViewProfile(user)}
+                  className="user-profile-access-trigger view-profile-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onViewProfile && onViewProfile(user);
+                  }}
                   title="Ver perfil"
                 >
-                  Perfil
+                  VISUALIZAR PERFIL
                 </button>
               </div>
             </div>

@@ -84,18 +84,17 @@ export default function UserManagementTable({
           users.map((user) => (
             <div key={user.id} className="user-row">
               <div className="user-cell">
-                <span className="user-name">{user.nome}</span>
+                <span className="user-name-large">{user.nome}</span>
               </div>
               <div className="user-cell">
-                <span className="user-email">{user.email}</span>
+                <span className="user-email-large">{user.email}</span>
               </div>
               <div className="user-cell">
                 <div className="status-indicator">
                   <div 
-                    className="status-dot" 
-                    style={{ backgroundColor: getStatusColor(user.status) }}
+                    className={`status-dot-only ${user.status === 'offline' ? 'offline' : ''}`}
+                    title={user.status === 'online' ? 'Online' : 'Offline'}
                   ></div>
-                  <span className="status-text">{user.status === 'online' ? 'Online' : 'Offline'}</span>
                 </div>
               </div>
               <div className="user-cell">

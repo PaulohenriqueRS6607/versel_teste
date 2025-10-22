@@ -1,3 +1,5 @@
+@import './responsive.css';
+
 /* Container principal */
 .criar-sala-container {
   min-height: 100vh;
@@ -7,6 +9,80 @@
   justify-content: center;
   padding-top: 80px;
   box-sizing: border-box;
+}
+
+/* Mobile First - Sobrescrever para mobile */
+@media screen and (max-width: 768px) {
+  .criar-sala-container {
+    background: #1DA1F2 !important;
+    padding-top: 0 !important;
+    min-height: 100vh !important;
+  }
+
+  .criar-sala-content {
+    max-width: 400px !important;
+    padding: 40px 20px !important;
+    min-height: 100vh !important;
+    justify-content: center !important;
+  }
+
+  .criar-sala-title {
+    font-size: 28px !important;
+    letter-spacing: 2px !important;
+    margin-bottom: 40px !important;
+  }
+
+  .sala-card {
+    border-radius: 20px !important;
+    padding: 40px 30px !important;
+    max-width: 350px !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15) !important;
+  }
+
+  .close-btn {
+    display: none !important;
+  }
+
+  .form-group {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    margin-bottom: 30px !important;
+  }
+
+  .form-label {
+    color: #333 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .form-textarea {
+    background: #f5f5f5 !important;
+    border: 2px solid #e8e8e8 !important;
+    border-radius: 12px !important;
+    min-height: 120px !important;
+    resize: none !important;
+    color: #666 !important;
+  }
+
+  .form-textarea:focus {
+    border-color: #1DA1F2 !important;
+    background: white !important;
+  }
+
+  .criar-btn {
+    background: #ccc !important;
+    border-radius: 12px !important;
+    padding: 18px 0 !important;
+    box-shadow: none !important;
+  }
+
+  .criar-btn:not(:disabled) {
+    background: #00C851 !important;
+  }
 }
 
 /* Conteúdo central */
@@ -170,23 +246,191 @@
   filter: grayscale(0.5);
 }
 
-/* Responsivo */
+/* Label do formulário */
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 8px;
+  text-transform: none;
+}
+
+/* Textarea */
+.form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: inherit;
+  color: #333;
+  background: #fff;
+  resize: vertical;
+  min-height: 100px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: #00A6FF;
+}
+
+.form-textarea::placeholder {
+  color: #999;
+  font-weight: 400;
+}
+
+.form-textarea:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Responsividade Mobile */
 @media (max-width: 768px) {
   .criar-sala-container {
-    padding: 20px;
-    padding-top: 80px;
+    min-height: 100vh;
+    background: #1DA1F2;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0;
+  }
+
+  .criar-sala-content {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
   }
   
   .criar-sala-title {
-    font-size: 24px;
-    margin-bottom: 20px;
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    text-align: center;
+    letter-spacing: 2px;
   }
-  
+
   .sala-card {
-    padding: 30px 20px;
+    background: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  /* Ocultar botão fechar em mobile */
+  .close-btn {
+    display: none;
   }
   
   .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .form-label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .form-textarea {
+    width: 100%;
+    padding: 16px;
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    font-size: 16px;
+    min-height: 120px;
+    background: #f5f5f5;
+    color: #666;
+    box-sizing: border-box;
+    font-family: inherit;
+    resize: none;
+  }
+
+  .form-textarea:focus {
+    border-color: #1DA1F2;
+    background: white;
+    outline: none;
+  }
+
+  .form-textarea::placeholder {
+    color: #999;
+    font-size: 16px;
+  }
+
+  .criar-btn {
+    width: 100%;
+    background: #ccc;
+    color: white;
+    border: none;
+    padding: 18px 0;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: none;
+    transition: all 0.3s ease;
+  }
+
+  .criar-btn:not(:disabled) {
+    background: #00C851;
+  }
+
+  .criar-btn:hover:not(:disabled) {
+    background: #00A843;
+  }
+
+  .criar-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 480px) {
+  .criar-sala-content {
+    max-width: 320px;
+    padding: 15px;
+  }
+
+  .criar-sala-title {
+    font-size: 20px;
+    margin-bottom: 25px;
+  }
+
+  .sala-card {
+    padding: 25px 20px;
+  }
+
+  .form-textarea {
+    min-height: 100px;
+    padding: 14px;
+  }
+
+  .criar-btn {
+    padding: 14px 0;
+    font-size: 15px;
   }
 }

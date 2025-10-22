@@ -8,35 +8,29 @@ export default function Header() {
     const { userData, isLoggedIn, logout } = useAuth();
     
     
-    // Estado para controlar o dropdown de configurações
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const settingsDropdownRef = useRef(null);
     
-    // Estado para controlar o dropdown do perfil do usuário
     const [isUserProfileOpen, setIsUserProfileOpen] = useState(false);
     const userProfileDropdownRef = useRef(null);
     
-    // Estado para controlar o menu hamburger
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    // Função para controlar o menu hamburger
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
         setIsSettingsOpen(false);
         setIsUserProfileOpen(false);
     };
 
-    // Funções para controlar o dropdown de configurações
     const toggleSettings = () => {
         setIsSettingsOpen(!isSettingsOpen);
-        setIsUserProfileOpen(false); // Fecha o dropdown do usuário
+        setIsUserProfileOpen(false);
         setIsMobileMenuOpen(false); // Fecha o menu mobile
     };
 
-    // Funções para controlar o dropdown do perfil do usuário
     const toggleUserProfile = () => {
         setIsUserProfileOpen(!isUserProfileOpen);
-        setIsSettingsOpen(false); // Fecha o dropdown de configurações
+        setIsSettingsOpen(false);
         setIsMobileMenuOpen(false); // Fecha o menu mobile
     };
 
@@ -45,13 +39,10 @@ export default function Header() {
         setIsSettingsOpen(false);
         setIsMobileMenuOpen(false);
         
-        // Aqui você pode adicionar a lógica para cada opção
         switch(option) {
-                // Redirecionar para página de termos
             case 'TERMOS':
                 navigate('/termos');
                 break;
-                // Redirecionar para página de contato
             case 'CONTATO':
                 navigate('/contato');
                 break;            
@@ -70,37 +61,35 @@ export default function Header() {
         setIsUserProfileOpen(false);
         setIsMobileMenuOpen(false);
 
-        // Verificar se usuário está logado
         if (!isLoggedIn) {
             alert('Você precisa estar logado para acessar esta funcionalidade. Faça login para continuar.');
             navigate('/login');
             return;
         }
 
-        // Aqui você pode adicionar a lógica para cada opção do perfil
         switch(option) {
             case 'MINHA CONTA':
-                // Redirecionar para página de perfil
                 navigate('/perfil');
                 break;
             case 'USUÁRIOS':
-                // Redirecionar para página de usuários
                 navigate('/usuarios');
                 break;
-            case 'GERENCIAR USUÁRIOS':
-                // Redirecionar para página de administração de usuários
+            case 'ADMIN USUÁRIOS':
                 navigate('/admin/usuarios');
+                break;
+            case 'SAIR':
+                // Implementar logout
+                logout();
+                navigate('/login');
                 break;
             default:
                 break;
         }
     };
 
-    // Função para lidar com cliques no menu mobile
     const handleMobileMenuClick = (option) => {
         setIsMobileMenuOpen(false);
 
-        // Verificar se usuário está logado para opções que requerem autenticação
         if ((option === 'MINHA CONTA' || option === 'USUÁRIOS') && !isLoggedIn) {
             alert('Você precisa estar logado para acessar esta funcionalidade. Faça login para continuar.');
             navigate('/login');
@@ -132,7 +121,6 @@ export default function Header() {
         }
     };
 
-    // Hook para fechar dropdowns ao clicar fora
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (settingsDropdownRef.current && !settingsDropdownRef.current.contains(event.target)) {
@@ -152,7 +140,6 @@ export default function Header() {
         };
     }, [isSettingsOpen, isUserProfileOpen]);
 
-    // Hook para fechar menu mobile ao pressionar ESC
     useEffect(() => {
         const handleEscapeKey = (event) => {
             if (event.key === 'Escape') {
@@ -203,7 +190,6 @@ export default function Header() {
                             className="avatar" 
                         />
                         <span className="username">{userData?.nome || 'USUARIO'}</span>
-                        <span className="dropdown-arrow">▼</span>
                         
                         {/* Dropdown Menu do Perfil */}
                         {isUserProfileOpen && (
@@ -222,12 +208,20 @@ export default function Header() {
                                     >
                                         USUÁRIOS
                                     </div>
-                                    {/* Opção de administrador pode ser adicionada baseada no tipo de usuário */}
+                                    {/* Opção de administrador - apenas para usuários ADM */}
+                                    {(userData?.permissoes === 'ADM' || userData?.tipoUsuario === 'ADM') && (
+                                        <div 
+                                            className="user-dropdown-item admin-item" 
+                                            onClick={() => handleUserProfileClick('ADMIN USUÁRIOS')}
+                                        >
+                                            ADMIN USUÁRIOS
+                                        </div>
+                                    )}
                                     <div 
-                                        className="user-dropdown-item admin-item" 
-                                        onClick={() => handleUserProfileClick('GERENCIAR USUÁRIOS')}
+                                        className="user-dropdown-item" 
+                                        onClick={() => handleUserProfileClick('SAIR')}
                                     >
-                                        GERENCIAR USUÁRIOS
+                                        SAIR
                                     </div>
                                 </div>
                             </div>

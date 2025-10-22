@@ -23,6 +23,8 @@ import ConnectionError from './pages/ConnectionError';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import DevRoutes from './pages/DevRoutes';
+import Unauthorized from './pages/Unauthorized';
+import ProtectedRoute from './components/ProtectedRoute';
 
 import './assets/font/imports.css';
 
@@ -68,12 +70,21 @@ function AppContent() {
                 <Route path="/LoadHost" element={<LoadHost />} />
                 <Route path="/ajuda" element={<Suporte />} />
                 <Route path="/pin" element={<PinPage />} />
-                <Route path="/createquiz" element={<CreateQuiz />} />
+                <Route path="/createquiz" element={
+                    <ProtectedRoute requiredPermission="CRIADOR">
+                        <CreateQuiz />
+                    </ProtectedRoute>
+                } />
                 <Route path="/criarsala" element={<CriarSala />} />
                 <Route path="/sala" element={<Sala />} />
                 <Route path="/fim" element={<FimDeJogo />} />
                 <Route path="/usuarios" element={<Usuarios />} />
-                <Route path="/admin/usuarios" element={<AdminUsers />} />
+                <Route path="/admin/usuarios" element={
+                    <ProtectedRoute requiredPermission="ADM">
+                        <AdminUsers />
+                    </ProtectedRoute>
+                } />
+                <Route path="/unauthorized" element={<Unauthorized />} />
                 <Route path="/connection-error" element={<ConnectionError />} />
                 <Route path="/ForgotPassword" element={<ForgotPassword />} />
                 <Route path="/ResetPassword" element={<ResetPassword />} />

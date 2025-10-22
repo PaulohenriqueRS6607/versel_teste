@@ -1,3 +1,4 @@
+/* Estilos para desktop (acima de 768px) */
 .game-background {
     width: 100%;
     display: block;
@@ -6,22 +7,233 @@
 .jogue-agora-container {
     background: #D8E6FB;
     border-radius: 18px;
-    padding: 50px 40px 40px 40px;
-    margin: 40px auto 0 auto;
-    width: fit-content;
+    padding: 15px 5px 25px;
+    margin: 10px auto 0;
+    width: calc(100% - 20px);
+    max-width: 320px;
     position: relative;
     box-shadow: 0 4px 24px #0001;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
+    overflow: visible;
 }
 
 .jogue-agora-slogan {
     position: absolute;
-    top: -40px;
-    left: 25px;
+    top: -30px;
+    left: 15px;
     z-index: 2;
     pointer-events: none;
+    max-width: 180px;
+    height: auto;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    min-height: 340px;
+    overflow: hidden;
+}
+
+.slides-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    flex: 1;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.slides-container {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    width: 100%;
+}
+
+.mobile-slide {
+    min-width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0 5px;
+    display: flex;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    height: 100%;
+    position: relative;
+}
+
+.nav-arrow {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #4A7CFF;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    position: absolute;
+    padding: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.nav-arrow:active {
+    transform: scale(0.9);
+    background: #4A7CFF;
+}
+
+.nav-arrow:active svg {
+    color: white;
+}
+
+.nav-arrow svg {
+    color: #4A7CFF;
+    font-size: 18px;
+    transition: all 0.2s ease;
+}
+
+.nav-arrow:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #ccc;
+}
+
+.nav-arrow:disabled svg {
+    color: #ccc;
+}
+
+.left-arrow {
+    left: 5px;
+}
+
+.right-arrow {
+    right: 5px;
+}
+
+.slides-wrapper {
+    margin: 0 15px;
+}
+
+.slide-indicators {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 0 5px;
+    z-index: 5;
+    background: linear-gradient(to top, rgba(216, 230, 251, 0.9) 60%, transparent 100%);
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0;
+}
+
+.indicator.active {
+    background-color: #4A7CFF;
+    transform: scale(1.2);
+}
+
+.indicator:active {
+    transform: scale(0.9);
+}
+
+/* Melhorias de acessibilidade e feedback visual */
+.nav-arrow:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 124, 255, 0.3);
+}
+
+/* Efeito de hover suave */
+/* Melhorias de hover e foco para acessibilidade */
+@media (hover: hover) {
+    .nav-arrow:hover {
+        background: #4A7CFF;
+    }
+    
+    .nav-arrow:hover svg {
+        color: white;
+    }
+    
+    .indicator:hover {
+        background-color: rgba(74, 124, 255, 0.5);
+    }
+    
+    .opcao-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 400px) {
+    .jogue-agora-container {
+        padding: 10px 0 20px;
+        margin: 5px auto 0;
+        width: 95%;
+    }
+    
+    .opcao-card {
+        max-width: 180px;
+        min-height: 180px;
+        height: 180px;
+        padding: 8px 3px 3px;
+    }
+    
+    .card-btn {
+        max-width: 140px;
+    }
+    
+    .btn-text {
+        font-size: 1em;
+    }
+    
+    .jogue-agora-slogan {
+        max-width: 130px;
+        top: -20px;
+        left: 10px;
+    }
+    
+    .card-img {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .opcao-card h3 {
+        font-size: 1em;
+        margin: 0;
+    }
+    
+    .opcao-card p {
+        font-size: 0.75em;
+        margin: 2px 0 5px;
+    }
 }
 
 .opcoes-container {
@@ -29,22 +241,32 @@
     gap: 35px;
     margin-top: 5px;
     justify-content: center;
+    width: 100%;
 }
 
 .opcao-card {
     background: #e9dddd;
-    width: 240px;
-    height: 240px;
-    border-radius: 20px 50px 20px 50px;
-    padding: 10px 10px 5px 10px;
+    width: 100%;
+    max-width: 200px;
+    min-height: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border-radius: 15px 40px 15px 40px;
+    padding: 10px 5px 5px;
     text-align: center;
-    box-shadow: 0 4px 16px #0002;
+    box-shadow: 0 2px 8px #0002;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    margin: 0 0;
-    transition: box-shadow 0.2s;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.opcao-card:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px #0003;
 }
 
 .opcao-card:hover {
@@ -56,7 +278,9 @@
     cursor: pointer;
     transition: transform 0.2s;
     margin-top: auto;
-    margin-bottom: 2px;
+    margin-bottom: 0;
+    width: 100%;
+    max-width: 160px;
 }
 
 .btn-container:hover {
@@ -64,10 +288,12 @@
 }
 
 .card-btn {
-    width: 200px;
-    height: 60px;
+    width: 100%;
+    height: auto;
+    max-height: 50px;
     cursor: pointer;
     transition: filter 0.2s;
+    object-fit: contain;
 }
 
 .card-btn:hover {
@@ -81,17 +307,21 @@
     transform: translate(-50%, -50%);
     color: #fff;
     font-weight: bold;
-    font-size: 1.4em;
-    letter-spacing: 1px;
+    font-size: 1.1em;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
     pointer-events: none;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    width: 100%;
+    text-align: center;
 }
 
 .card-img {
-    width: 70px;
-    height: 70px;
-    margin: 5px 0;
+    width: 50px;
+    height: 50px;
+    margin: 2px 0;
+    object-fit: contain;
 }
 
 .opcao-card h3 {
@@ -110,14 +340,27 @@
 }
 .opcoes-container {
     display: flex;
-    gap: 120px;
+    gap: 35px;
     margin-top: 5px;
     justify-content: center;
-    position: relative;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .middle-add-icon {
     transform: rotate(45deg);
-   width: 140px;  
-    height: auto; 
+    width: 60px;
+    height: auto;
+    align-self: center;
+}
+
+/* Estilos específicos para desktop */
+@media (min-width: 769px) {
+    .opcoes-container {
+        gap: 60px;
+    }
+    
+    .middle-add-icon {
+        width: 100px;
+    }
 }

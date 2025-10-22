@@ -27,8 +27,8 @@
 }
 
 .recovery-image {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 60%;
+  max-height: 60%;
   object-fit: contain;
 }
 
@@ -39,6 +39,7 @@
   justify-content: center;
   width: 100%;
   min-height: 0;
+  background: transparent;
 }
 
 .form-content {
@@ -48,6 +49,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  background: transparent;
 }
 
 .form-title {
@@ -66,6 +68,7 @@
   gap: 30px;
   width: 100%;
   align-items: center;
+  background: transparent;
 }
 
 /* Especificidade aumentada para evitar conflitos */
@@ -172,7 +175,7 @@
   font-size: 14px;
   font-weight: 500;
   color: #333;
-  background: white;
+  background: transparent;
   box-sizing: border-box;
   margin-bottom: 15px;
 }

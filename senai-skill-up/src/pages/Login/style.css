@@ -50,6 +50,7 @@ header {
     width: 100%;
     background-color: #fff;
     min-height: 100vh;
+    height: 100vh;
     overflow: hidden;
 }
 
@@ -255,6 +256,8 @@ form.sign-in-form {
 
 .image {
     width: 100%;
+    max-height: 400px;
+    object-fit: contain;
     transition: transform 1.1s ease-in-out;
     transition-delay: 0.4s;
 }
@@ -349,7 +352,202 @@ form.sign-in-form {
     pointer-events: all;
 }
 
-/* Responsividade removida */
+@media (max-width: 870px) {
+    .container {
+        min-height: 100vh;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .signin-signup {
+        width: 100%;
+        top: 95%;
+        transform: translate(-50%, -100%);
+        transition: 1s 0.8s ease-in-out;
+    }
+
+    .signin-signup,
+    .container.sign-up-mode .signin-signup {
+        left: 50%;
+    }
+
+    .panels-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 2fr 1fr;
+    }
+
+    .panel {
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        padding: 2.5rem 8%;
+        grid-column: 1 / 2;
+    }
+
+    .panel .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .panel .content .primary-button,
+    .panel .content .btn {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    .right-panel {
+        grid-row: 3 / 4;
+        overflow: visible;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .left-panel {
+        grid-row: 1 / 2;
+    }
+
+    .image {
+        width: 200px;
+        height: 150px;
+        object-fit: contain;
+        transition: transform 0.9s ease-in-out;
+        transition-delay: 0.6s;
+        transform: translateX(0px) translateY(-20px);
+    }
+
+    .panel .content {
+        padding-right: 15%;
+        transition: transform 0.9s ease-in-out;
+        transition-delay: 0.8s;
+        z-index: 10;
+        position: relative;
+    }
+
+    .panel .content > div {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .panel h3 {
+        font-size: 1.2rem;
+    }
+
+    .panel p {
+        font-size: 0.7rem;
+        padding: 0.5rem 0;
+    }
+
+    .primary-button.transparent {
+        width: 110px;
+        height: 35px;
+        font-size: 0.7rem;
+    }
+
+    .btn.transparent {
+        width: 110px;
+        height: 35px;
+        font-size: 0.7rem;
+    }
+
+    .social-media {
+        display: none;
+    }
+
+    .social-text {
+        display: none;
+    }
+
+    .container:before {
+        width: 1500px;
+        height: 1500px;
+        transform: translateX(-50%);
+        left: 30%;
+        bottom: 68%;
+        right: initial;
+        top: initial;
+        transition: 2s ease-in-out;
+    }
+
+    .container.sign-up-mode:before {
+        transform: translate(-50%, 100%);
+        bottom: 32%;
+        left: 30%;
+        right: initial;
+    }
+
+    .container.sign-up-mode .left-panel .image,
+    .container.sign-up-mode .left-panel .content {
+        transform: translateY(-300px);
+    }
+
+    .container.sign-up-mode .right-panel .image,
+    .container.sign-up-mode .right-panel .content {
+        transform: translateY(0px);
+    }
+
+    .container.sign-up-mode .right-panel .image {
+        transform: translateX(120px) translateY(-60px);
+    }
+
+    .right-panel .image,
+    .right-panel .content {
+        transform: translateY(200px);
+    }
+
+    .right-panel .image {
+        transform: translateX(120px) translateY(120px);
+    }
+
+    .container.sign-up-mode .signin-signup {
+        top: 5%;
+        transform: translate(-50%, 0);
+    }
+}
+
+@media (max-width: 570px) {
+    form {
+        padding: 0 1.5rem;
+    }
+
+    .image {
+        display: none;
+        width: 150px;
+        height: 100px;
+        object-fit: contain;
+        transform: translateX(-20px) translateY(-15px);
+    }
+
+    .panel .content {
+        padding: 0.5rem 1rem;
+    }
+
+    .social-media {
+        display: none;
+    }
+
+    .social-text {
+        display: none;
+    }
+
+    .container {
+        padding: 1.5rem;
+    }
+
+    .container:before {
+        bottom: 72%;
+        left: 50%;
+    }
+
+    .container.sign-up-mode:before {
+        bottom: 28%;
+        left: 50%;
+    }
+}
 
 /* --- RESET ESPECÍFICO PARA A PÁGINA DE LOGIN --- */
 body {

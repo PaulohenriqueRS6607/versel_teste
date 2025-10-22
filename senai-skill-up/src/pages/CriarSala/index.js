@@ -82,6 +82,7 @@ export default function CriarSala() {
             <button className="close-btn" onClick={handleFechar}>×</button>
             
             <div className="form-group">
+              <label className="form-label">Título do questionário</label>
               <select 
                 value={questionario} 
                 onChange={(e) => setQuestionario(e.target.value)}
@@ -89,7 +90,7 @@ export default function CriarSala() {
                 disabled={loading || criandoSala}
               >
                 <option value="">
-                  {loading ? 'Carregando...' : 'Selecione o Questionario'}
+                  {loading ? 'Carregando...' : 'Selecione o Questionário'}
                 </option>
                 {!loading && !error && temas.map((tema) => (
                   <option key={tema.id} value={tema.id}>
@@ -103,7 +104,7 @@ export default function CriarSala() {
             <button 
               className="criar-btn" 
               onClick={handleCriar}
-              disabled={loading || criandoSala || !questionario}
+              disabled={loading || criandoSala}
             >
               {criandoSala ? 'CRIANDO...' : 'CRIAR'}
             </button>

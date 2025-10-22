@@ -5,9 +5,9 @@ import "./style.css";
 
 export default function Jogo() {
     return (
-        <div className="no-scroll">
+        <>
             <Header />
             <GameQuiz />
-        </div>
+        </>
     );
 }

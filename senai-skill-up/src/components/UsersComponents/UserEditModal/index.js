@@ -33,7 +33,6 @@ export default function UserEditModal({ user, onSave, onClose }) {
         precisao: user.precisao || 0
       });
     } else {
-      // Reset form for new user
       setFormData({
         nome: '',
         email: '',
@@ -87,7 +86,6 @@ export default function UserEditModal({ user, onSave, onClose }) {
       [name]: newValue
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -142,168 +140,94 @@ export default function UserEditModal({ user, onSave, onClose }) {
   };
 
   return (
-    <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal-container">
-        <div className="modal-header">
-          <h2>{user ? 'Editar Usuário' : 'Novo Usuário'}</h2>
-          <button className="close-btn" onClick={onClose}>×</button>
+    <div className="modern-modal-overlay" onClick={handleOverlayClick}>
+      <div className="modern-modal-container">
+        <div className="modern-modal-header">
+          <h2>Editar Usuário</h2>
+          <button className="modern-close-btn" onClick={onClose}>×</button>
         </div>
 
-        <form onSubmit={handleSubmit} className="modal-form">
-          <div className="form-section">
-            <h3>Informações Básicas</h3>
+        <form onSubmit={handleSubmit} className="modern-modal-content">
+          <div className="user-preview-section">
+            <div className="preview-header">
+              <span>Nome</span>
+              <span>Email</span>
+              <span>Status</span>
+              <span>Permissões</span>
+            </div>
             
-            <div className="form-group">
-              <label htmlFor="nome">Nome *</label>
-              <input
-                type="text"
-                id="nome"
-                name="nome"
-                value={formData.nome}
-                onChange={handleInputChange}
-                className={errors.nome ? 'error' : ''}
-                placeholder="Digite o nome do usuário"
-              />
-              {errors.nome && <span className="error-message">{errors.nome}</span>}
+            <div className="preview-data">
+              <span className="preview-name">{formData.nome || 'NOME DO USUÁRIO'}</span>
+              <span className="preview-email">{formData.email || 'email@exemplo.com'}</span>
+              <div className="preview-status">
+                <div className={`status-dot ${formData.status === 'offline' ? 'offline' : ''}`}></div>
+              </div>
+              <span className={`preview-permission ${formData.permissoes?.toLowerCase()}-badge`}>
+                {formData.permissoes || 'USER'}
+              </span>
             </div>
+          </div>
 
-            <div className="form-group">
-              <label htmlFor="email">Email *</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className={errors.email ? 'error' : ''}
-                placeholder="Digite o email do usuário"
-              />
-              {errors.email && <span className="error-message">{errors.email}</span>}
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="status">Status</label>
-                <select
-                  id="status"
-                  name="status"
-                  value={formData.status}
+          <div className="lateral-edit-section">
+            <div className="edit-form-lateral">
+              <div className="form-field-lateral">
+                <label>NOME</label>
+                <span className="required">*</span>
+                <input
+                  type="text"
+                  name="nome"
+                  value={formData.nome}
                   onChange={handleInputChange}
-                >
-                  <option value="online">Online</option>
-                  <option value="offline">Offline</option>
-                </select>
+                  className={errors.nome ? 'error' : ''}
+                  placeholder="Digite o nome do usuário"
+                />
+                {errors.nome && <span className="error-text">{errors.nome}</span>}
               </div>
 
-              <div className="form-group">
-                <label htmlFor="permissoes">Permissões</label>
+              <div className="form-field-lateral">
+                <label>EMAIL</label>
+                <span className="required">*</span>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className={errors.email ? 'error' : ''}
+                  placeholder="Digite o email do usuário"
+                />
+                {errors.email && <span className="error-text">{errors.email}</span>}
+              </div>
+
+              <div className="form-field-lateral">
+                <label>PERMISSÕES</label>
                 <button
                   type="button"
-                  className="permission-select-button"
+                  className="permission-dropdown-lateral"
                   onClick={handlePermissionClick}
                 >
-                  <span className="permission-button-text">
+                  <span className={`permission-badge-lateral ${formData.permissoes?.toLowerCase()}-badge`}>
                     {getPermissionLabel(formData.permissoes)}
                   </span>
-                  <span className="permission-button-arrow">▼</span>
                 </button>
               </div>
             </div>
-
-            <div className="form-group">
-              <label htmlFor="tipoUsuario">Tipo de Usuário</label>
-              <input
-                type="text"
-                id="tipoUsuario"
-                name="tipoUsuario"
-                value={getPermissionLabel(formData.permissoes)}
-                readOnly
-                className="readonly-input"
-              />
-            </div>
           </div>
 
-          <div className="form-section">
-            <h3>Estatísticas do Jogo</h3>
-            
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="pontos">Pontos</label>
-                <input
-                  type="number"
-                  id="pontos"
-                  name="pontos"
-                  value={formData.pontos}
-                  onChange={handleInputChange}
-                  className={errors.pontos ? 'error' : ''}
-                  min="0"
-                />
-                {errors.pontos && <span className="error-message">{errors.pontos}</span>}
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="nivel">Nível</label>
-                <select
-                  id="nivel"
-                  name="nivel"
-                  value={formData.nivel}
-                  onChange={handleInputChange}
-                >
-                  <option value="Bronze">Bronze</option>
-                  <option value="Prata">Prata</option>
-                  <option value="Ouro">Ouro</option>
-                  <option value="Diamante">Diamante</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="jogosJogados">Jogos Jogados</label>
-                <input
-                  type="number"
-                  id="jogosJogados"
-                  name="jogosJogados"
-                  value={formData.jogosJogados}
-                  onChange={handleInputChange}
-                  className={errors.jogosJogados ? 'error' : ''}
-                  min="0"
-                />
-                {errors.jogosJogados && <span className="error-message">{errors.jogosJogados}</span>}
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="precisao">Precisão (%)</label>
-                <input
-                  type="number"
-                  id="precisao"
-                  name="precisao"
-                  value={formData.precisao}
-                  onChange={handleInputChange}
-                  className={errors.precisao ? 'error' : ''}
-                  min="0"
-                  max="100"
-                />
-                {errors.precisao && <span className="error-message">{errors.precisao}</span>}
-              </div>
-            </div>
-          </div>
-
-          <div className="modal-actions">
+          <div className="modern-modal-actions">
             <button
               type="button"
-              className="btn btn-secondary"
+              className="btn-cancel"
               onClick={onClose}
               disabled={isSubmitting}
             >
-              Cancelar
+              CANCELAR
             </button>
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn-update"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Salvando...' : (user ? 'Atualizar' : 'Criar')}
+              {isSubmitting ? 'SALVANDO...' : 'ATUALIZAR'}
             </button>
           </div>
         </form>
