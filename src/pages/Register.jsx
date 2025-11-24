@@ -20,6 +20,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { registerUser } from '../services/api';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -28,7 +29,9 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    cpf: '',
+    birthDate: ''
   });
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
@@ -64,7 +67,7 @@ const Register = () => {
     e.preventDefault();
     setError('');
 
-    if (!formData.name || !formData.email || !formData.password) {
+    if (!formData.name || !formData.email || !formData.password || !formData.cpf || !formData.birthDate) {
       setError('Por favor, preencha todos os campos');
       return;
     }
@@ -87,7 +90,15 @@ const Register = () => {
     setLoading(true);
 
     // Simulação de cadastro
-    setTimeout(() => {
+    try {
+      await registerUser({
+        nome: formData.name,
+        email: formData.email,
+        senha: formData.password,
+        cpf: formData.cpf,
+        dataNascimento: formData.birthDate
+      });
+
       const userData = {
         name: formData.name,
         email: formData.email,
@@ -96,8 +107,11 @@ const Register = () => {
       localStorage.setItem('user', JSON.stringify(userData));
       localStorage.setItem('userPhoto', photoPreview);
       navigate('/ingressos');
+    } catch (err) {
+      setError(err.message || 'Erro ao realizar cadastro');
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -210,6 +224,30 @@ const Register = () => {
                   </InputAdornment>
                 ),
               }}
+              sx={{ mb: 2 }}
+            />
+
+            <TextField
+              fullWidth
+              label="CPF"
+              name="cpf"
+              value={formData.cpf}
+              onChange={handleChange}
+              margin="normal"
+              required
+              sx={{ mb: 2 }}
+            />
+
+            <TextField
+              fullWidth
+              label="Data de Nascimento"
+              name="birthDate"
+              type="date"
+              value={formData.birthDate}
+              onChange={handleChange}
+              margin="normal"
+              required
+              InputLabelProps={{ shrink: true }}
               sx={{ mb: 2 }}
             />
 

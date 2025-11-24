@@ -16,6 +16,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
+import { login as apiLogin } from '../services/api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,18 +29,23 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    if (!email || !password) {
+      setError('Por favor, preencha todos os campos');
+      return;
+    }
+
     setLoading(true);
 
     // Simulação de login
-    setTimeout(() => {
-      if (email && password) {
-        localStorage.setItem('user', JSON.stringify({ email }));
-        navigate('/ingressos');
-      } else {
-        setError('Por favor, preencha todos os campos');
-      }
+    try {
+      await apiLogin(email, password);
+      localStorage.setItem('user', JSON.stringify({ email }));
+      navigate('/ingressos');
+    } catch (err) {
+      setError(err.message || 'Erro ao fazer login');
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
